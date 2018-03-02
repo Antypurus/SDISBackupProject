@@ -11,7 +11,7 @@ public class PeerMain {
     public static void main(String args[]){
         NumberFormat nf = NumberFormat.getNumberInstance();
         for (Path root : FileSystems.getDefault().getRootDirectories()) {
-
+            System.nanoTime();
             System.out.print(root + ": ");
             try {
                 FileStore store = Files.getFileStore(root);
