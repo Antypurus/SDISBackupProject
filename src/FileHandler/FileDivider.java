@@ -72,4 +72,13 @@ public class FileDivider {
         return fileChunks;
     }
 
+    /**
+     *  splits the file into chunks of the specified max size
+     * @param file file to be split
+     * @return array with the various chunks in order
+     */
+    public String[] splitFile(String file){
+        return this.divideFileIntoChunks(file);
+    }
+
 }
