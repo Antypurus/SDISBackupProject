@@ -18,9 +18,9 @@ public class FileDivider {
     }
 
     /**
-     *
-     * @param fileSize
-     * @return
+     * calculates the number of chunks of max size and of smaller size required to store the file
+     * @param fileSize the size of the file to be split
+     * @return a pair where the key is the number of max size chunks and the value is the number of smaller sized chunks
      */
     protected Pair<Integer,Integer> calculateFileChunkSizeRequirement(int fileSize){
         int fullChunks  = 0;    //the number of max sized chunks
@@ -43,9 +43,9 @@ public class FileDivider {
     }
 
     /**
-     *
-     * @param fileSize
-     * @return
+     * creates an array of strings used to keep the various chunks of the file
+     * @param fileSize size of the file to be divied
+     * @return array to contain the file chunks
      */
     protected String[] fileChunkContainerGenerator(int fileSize){
         Pair<Integer,Integer> chunkSizeRequirements = this.calculateFileChunkSizeRequirement(fileSize);
@@ -55,9 +55,9 @@ public class FileDivider {
     }
 
     /**
-     *
-     * @param file
-     * @return
+     * divides the file into chunks of the max size specified
+     * @param file the file to be split
+     * @return array of strings with the various chunks
      */
     protected String[] divideFileIntoChunks(String file){
         String[] fileChunks     = this.fileChunkContainerGenerator(file.length());//the array that will contain the file chunks
