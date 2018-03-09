@@ -5,11 +5,9 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.NumberFormat;
 
 public class PeerMain {
     public static void main(String args[]){
-        NumberFormat nf = NumberFormat.getNumberInstance();
         for (Path root : FileSystems.getDefault().getRootDirectories()) {
             System.nanoTime();
             System.out.print(root + ": ");
