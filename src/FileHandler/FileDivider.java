@@ -81,4 +81,12 @@ public class FileDivider {
         return this.divideFileIntoChunks(file);
     }
 
+    public int getMaxFileSize(){
+        return this.maxFileSize;
+    }
+
+    public void setMaxFileSize(int maxFileSize){
+        this.maxFileSize = maxFileSize;
+    }
+
 }
