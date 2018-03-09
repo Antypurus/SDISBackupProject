@@ -3,6 +3,12 @@ package FileHandler;
 import javafx.util.Pair;
 import java.util.ArrayList;
 
+/**
+ *  ATTENTION: THIS CLASS SHOULD ONLY BE USED FOR RELATIVELY SMALL FILES
+ *  IF THE INTENDED FILE IS ANYWHERE NEAR TO THE PROTOCOL MAX OF 64GB THIS
+ *  CLASS MUST NOT BE USED, IN THAT CASE CHUNKS SHOULD BE READ IN 64k CHUNKS
+ *  AND STREEAMED THEN ,NOT PRELOADED INTO MEMORY.
+ */
 public class FileDivider {
 
     protected int maxFileSize = 0;
@@ -36,6 +42,11 @@ public class FileDivider {
         return ret;
     }
 
+    /**
+     *
+     * @param fileSize
+     * @return
+     */
     protected String[] fileChunkContainerGenerator(int fileSize){
         Pair<Integer,Integer> chunkSizeRequirements = this.calculateFileChunkSizeRequirement(fileSize);
 
@@ -43,6 +54,11 @@ public class FileDivider {
         return new String[chunkSizeRequirements.getKey()+chunkSizeRequirements.getValue()];
     }
 
+    /**
+     *
+     * @param file
+     * @return
+     */
     protected String[] divideFileIntoChunks(String file){
         String[] fileChunks     = this.fileChunkContainerGenerator(file.length());//the array that will contain the file chunks
         int nChunks             = fileChunks.length;//the number of chunks
