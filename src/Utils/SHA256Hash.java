@@ -3,7 +3,7 @@ package Utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Hashing{
+public class SHA256Hash {
 
     /**
      *
