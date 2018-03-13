@@ -10,7 +10,7 @@ public class SHA256Hash {
      * @param string string to hash
      * @return byte array with the hashed string
      */
-    private static byte[] stringToSHA256Bytes(String string) {
+    protected static byte[] stringToSHA256Bytes(String string) {
         MessageDigest digest = null;
         try {
             digest = MessageDigest.getInstance("SHA-256");
