@@ -16,7 +16,7 @@ public class SHA256Tests extends SHA256Hash {
     }
 
     @Test
-    public void byteEncodingTest() throws NoSuchAlgorithmException {
+    public void byteEncodingTest() {
         String toTest = "testString";
 
         byte[] bytemsg = digest.digest(toTest.getBytes());

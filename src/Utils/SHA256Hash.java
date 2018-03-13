@@ -5,9 +5,17 @@ import java.security.NoSuchAlgorithmException;
 
 public class SHA256Hash {
 
-    protected MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    protected static MessageDigest digest;
 
-    public SHA256Hash() throws NoSuchAlgorithmException {
+    static {
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public SHA256Hash(){
     }
 
     /**
