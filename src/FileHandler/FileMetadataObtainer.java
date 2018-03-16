@@ -38,11 +38,34 @@ public class FileMetadataObtainer {
     }
 
     /**
-     *
-     * @return
+     * Obtains the creation time of the currently set file
+     * @return FileTime Object with the creation date of the file
      */
     public FileTime getFileCreationTime(){
         return this.attributes.creationTime();
     }
 
+    /**
+     * Obtains the last time the file was altered
+     * @return FileTime object time with the last alter time
+     */
+    public FileTime getFileAlterTime(){
+        return this.attributes.lastModifiedTime();
+    }
+
+    /**
+     * Obtains the last time the file was accessed
+     * @return FileTime object with the last time the file was accessed
+     */
+    public FileTime getFileLastAccessTime(){
+        return this.attributes.lastAccessTime();
+    }
+
+    /**
+     * Obtains the size of the currently set file
+     * @return long with the size of the file
+     */
+    public long getFileSize(){
+        return this.attributes.size();
+    }
 }
