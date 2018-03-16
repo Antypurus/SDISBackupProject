@@ -24,7 +24,7 @@ public class SHA256Hash {
      * @return byte array with the hashed string
      */
     protected byte[] stringToSHA256Bytes(String string) {
-        return this.digest.digest(string.getBytes());
+        return digest.digest(string.getBytes());
     }
 
     /**
