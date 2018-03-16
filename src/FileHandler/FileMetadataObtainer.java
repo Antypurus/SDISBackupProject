@@ -9,14 +9,14 @@ import java.nio.file.attribute.FileTime;
 
 public class FileMetadataObtainer {
 
-    private String filepath = "";
-    private Path file = null;
-    private BasicFileAttributes attributes = null;
+    private String filepath;
+    private Path file;
+    private BasicFileAttributes attributes;
 
     /**
-     *
-     * @param filepath
-     * @throws IOException
+     * FileMetadataObtainer constructor obtains the attributes of a file using the filepath
+     * @param filepath filepath to file
+     * @throws IOException in case the file is not found
      */
     public FileMetadataObtainer(String filepath) throws IOException {
         this.filepath = filepath;
@@ -25,12 +25,12 @@ public class FileMetadataObtainer {
     }
 
     /**
-     *
-     * @param filepath
-     * @throws IOException
+     * Changes the active file, to do this it will search for the new file and read its attributes
+     * @param filepath filepath to the file
+     * @throws IOException in case the file is not found
      */
     public void changeFilePath(String filepath) throws IOException {
-        if(this.filepath!=filepath) {
+        if(!this.filepath.equals(filepath)) {
             this.filepath = filepath;
             this.file = Paths.get(filepath);
             this.attributes = Files.readAttributes(this.file, BasicFileAttributes.class);
@@ -67,5 +67,13 @@ public class FileMetadataObtainer {
      */
     public long getFileSize(){
         return this.attributes.size();
+    }
+
+    /**
+     *  Obtains the unique file key of the file
+     * @return Object object that servers as file key
+     */
+    public Object getFileKey(){
+        return this.attributes.fileKey();
     }
 }
