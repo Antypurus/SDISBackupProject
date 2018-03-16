@@ -30,9 +30,11 @@ public class FileMetadataObtainer {
      * @throws IOException
      */
     public void changeFilePath(String filepath) throws IOException {
-        this.filepath = filepath;
-        this.file = Paths.get(filepath);
-        this.attributes = Files.readAttributes(this.file,BasicFileAttributes.class);
+        if(this.filepath!=filepath) {
+            this.filepath = filepath;
+            this.file = Paths.get(filepath);
+            this.attributes = Files.readAttributes(this.file, BasicFileAttributes.class);
+        }
     }
 
     /**
