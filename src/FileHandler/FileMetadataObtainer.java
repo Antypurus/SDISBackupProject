@@ -14,6 +14,12 @@ public class FileMetadataObtainer {
     private BasicFileAttributes attributes;
 
     /**
+     * FileMetadataObtainer constructor for testing purposes
+     */
+    protected FileMetadataObtainer() {
+    }
+
+    /**
      * FileMetadataObtainer constructor obtains the attributes of a file using the filepath
      * @param filepath filepath to file
      * @throws IOException in case the file is not found
