@@ -1,40 +1,42 @@
 package Tests.FileHandlerTest;
 
+import FileHandler.FileIDCalculator;
 import FileHandler.FileMetadataObtainer;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 
-public class FileIDCalculatorTests extends FileMetadataObtainer{
+public class FileIDCalculatorTests extends FileIDCalculator{
 
     private File file;
-    private String testFile = "ReferenceTestFile";
-    private String testFileStartChunk;
+    private String testFile = "ReferenceTestFile.tst";
+    private String testFileStartChunk = "testing12456";
     private BasicFileAttributes fileAttribs;
     private Path filePath;
 
-    private FileIDCalculatorTests() throws IOException{
+    public FileIDCalculatorTests() throws IOException{
+
+        FileOutputStream f = new FileOutputStream(this.testFile);
+        f.write("testing12456".getBytes());
+        f.close();
+
         this.file = new File(this.testFile);
-        FileInputStream file = new FileInputStream(this.file);
-        byte[] bytes = new byte[100];
-        int read = file.read(bytes,0,100);
-        if(read==0){
-            throw new IOException();
-        }
-        this.testFileStartChunk = new String(bytes);
+
         this.filePath = Paths.get(this.testFile);
         this.fileAttribs = Files.readAttributes(this.filePath,BasicFileAttributes.class);
     }
 
     @Test
-    public void computeMetadataHashTest(){
+    public void computeMetadataHashTest() throws IOException{
+        int val = this.fileAttribs.creationTime().hashCode() * this.fileAttribs.lastModifiedTime().hashCode();
+        val+= this.fileAttribs.size();
 
+        this.meta = new FileMetadataObtainer(this.testFile);
+        assertEquals(val,this.computerMetadataHash());
     }
 }

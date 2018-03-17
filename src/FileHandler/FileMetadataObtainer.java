@@ -76,10 +76,11 @@ public class FileMetadataObtainer {
     }
 
     /**
+     *  THIS METHODS RETURN IS CAUSING PROBLEMS AS SUCH IS HAS BEEN DISABLED FOR EXTERNAL USE
      *  Obtains the unique file key of the file
      * @return Object object that servers as file key
      */
-    public Object getFileKey(){
+    private Object getFileKey(){
         return this.attributes.fileKey();
     }
 }
