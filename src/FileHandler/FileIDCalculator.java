@@ -16,8 +16,9 @@ public class FileIDCalculator {
      * Computes a hash of the file creation time and last alter time metadata
      * @return int with the hash code representing the relevant file metadata
      */
-    protected int computerFileTimeHash(){
+    protected int computerMetadataHash(){
         int ret = meta.getFileCreationTime().hashCode() * meta.getFileAlterTime().hashCode();
+        ret += meta.getFileSize() * meta.getFileKey().hashCode();
         return ret;
     }
 
@@ -27,7 +28,7 @@ public class FileIDCalculator {
      */
     protected String computedFileIDStringToHash(){
         String ret = "";
-        ret += this.referenceChunk + this.computedFileIDStringToHash() + this.senderID;
+        ret += this.referenceChunk + this.computerMetadataHash() + this.senderID;
         return ret;
     }
 
