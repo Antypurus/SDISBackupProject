@@ -9,9 +9,9 @@ import java.nio.file.attribute.FileTime;
 
 public class FileMetadataObtainer {
 
-    private String filepath;
-    private Path file;
-    private BasicFileAttributes attributes;
+    private String                  filepath;
+    private Path                    file;
+    private BasicFileAttributes     attributes;
 
     /**
      * FileMetadataObtainer constructor for testing purposes

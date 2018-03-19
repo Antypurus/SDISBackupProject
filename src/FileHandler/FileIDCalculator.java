@@ -1,16 +1,15 @@
 package FileHandler;
 
 import java.io.IOException;
-
 import Utils.SHA256Hash;
 
 public class FileIDCalculator {
 
-    protected static SHA256Hash hasher = null;
-    protected int senderID;
-    protected String referenceChunk;
-    protected FileMetadataObtainer meta=null;
-    protected String hashedID = null;
+    protected static SHA256Hash         hasher = null;
+    protected int                       senderID;
+    protected String                    referenceChunk;
+    protected FileMetadataObtainer      meta=null;
+    protected String                    hashedID = null;
 
     protected FileIDCalculator(){}
 
