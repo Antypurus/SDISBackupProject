@@ -55,6 +55,21 @@ public class FileIDCalculatorTests extends FileIDCalculator{
     }
 
     @Test
+    public void computerFileIDStringToHashEmptyFileChunkTest(){
+        int testSenderID = 1;
+        if(this.metadataHashVal==0){
+            int val = this.fileAttribs.creationTime().hashCode() * this.fileAttribs.lastModifiedTime().hashCode();
+            val+= this.fileAttribs.size();
+            this.metadataHashVal = val;
+        }
+        String str = "" + this.metadataHashVal + testSenderID;
+        this.HashStringFileID = str;
+        this.senderID = testSenderID;
+        this.referenceChunk = "";
+        assertEquals(str,this.computedFileIDStringToHash());
+    }
+
+    @Test
     public void HashFileIDTest(){
         if(this.HashStringFileID==null){
             int testSenderID = 1;
