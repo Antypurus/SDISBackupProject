@@ -74,6 +74,37 @@ public class FileDividerTests extends FileDivider {
     
     @Test
     public void fileDivisionAllLargeTest(){
-        
+        int testSize = 15;
+
+        String[] result = this.fileChunkContainerGenerator(testSize);
+
+        assertEquals(3, result.length);
+    }
+
+    @Test
+    public void divideFileIntoChunksAllSmallTest(){
+        String testStr = "test";
+        String[] result = this.divideFileIntoChunks(testStr);
+
+        assertEquals(testStr,result[0]);
+    }
+
+    @Test
+    public void divideFileIntoChunksSmallAndLargeTest(){
+        String testStr = "test1Test2test";
+        String[] result = this.divideFileIntoChunks(testStr);
+        assertEquals("test1",result[0]);
+        assertEquals("Test2",result[1]);
+        assertEquals("test",result[2]);
+    }
+
+    @Test
+    public void divideFileIntoChunksAllLargeTest(){
+        String testStr = "test1test2test3";
+        String[] result = this.divideFileIntoChunks(testStr);
+
+        assertEquals("test1",result[0]);
+        assertEquals("test2",result[1]);
+        assertEquals("test3",result[2]);
     }
 }

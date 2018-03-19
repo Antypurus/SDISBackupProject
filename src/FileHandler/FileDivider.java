@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class FileDivider {
 
     protected int maxFileSize = 0;
+    private Pair<Integer,Integer>SpacialRequirements = null;
 
     public FileDivider(int maxFileSize){
         this.maxFileSize = maxFileSize;
@@ -39,6 +40,7 @@ public class FileDivider {
         }
 
         Pair<Integer,Integer> ret = new Pair<Integer,Integer>(fullChunks,smChunks);
+        this.SpacialRequirements = ret;
         return ret;
     }
 
@@ -60,15 +62,28 @@ public class FileDivider {
      * @return array of strings with the various chunks
      */
     protected String[] divideFileIntoChunks(String file){
-        String[] fileChunks     = this.fileChunkContainerGenerator(file.length());//the array that will contain the file chunks
-        int nChunks             = fileChunks.length;//the number of chunks
+        String[] fileChunks                         = this.fileChunkContainerGenerator(file.length());//the array that will contain the file chunks
+        Pair<Integer, Integer> spacialReqs = null;
+        if(this.SpacialRequirements==null) {
+            spacialReqs = this.calculateFileChunkSizeRequirement(file.length());//the number of chunks
+        }else{
+            spacialReqs = this.SpacialRequirements;
+        }
+        int nChunks                                 = fileChunks.length;
 
         //copies the first chunks of the file
-        for(int i=0;i<nChunks;++i){
-           fileChunks[i] = file.substring(i*this.maxFileSize, i*this.maxFileSize+this.maxFileSize);
+        for(int i=0;i<spacialReqs.getKey();++i){
+            int startIndex = i*this.maxFileSize;
+            fileChunks[i] = file.substring(startIndex,i*this.maxFileSize+this.maxFileSize);
         }
         //copies the smaller chunk fo the file
-        fileChunks[nChunks-1] = file.substring(nChunks*this.maxFileSize,nChunks*this.maxFileSize+(file.length()-nChunks*this.maxFileSize));
+        if(spacialReqs.getValue()!=0) {
+            int indexToread = (spacialReqs.getKey()) * this.maxFileSize;
+            if (indexToread < 0) {
+                indexToread = 0;
+            }
+            fileChunks[nChunks - 1] = file.substring(indexToread, file.length());
+        }
         return fileChunks;
     }
 
