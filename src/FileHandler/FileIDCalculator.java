@@ -7,10 +7,10 @@ import Utils.SHA256Hash;
 public class FileIDCalculator {
 
     private static SHA256Hash hasher;
-    private int senderID;
-    private String referenceChunk;
+    protected int senderID;
+    protected String referenceChunk;
     protected FileMetadataObtainer meta=null;
-    private String hashedID = null;
+    protected String hashedID = null;
 
     protected FileIDCalculator(){}
 
@@ -18,7 +18,7 @@ public class FileIDCalculator {
      * Computes a hash of the file creation time and last alter time metadata
      * @return int with the hash code representing the relevant file metadata
      */
-    protected int computerMetadataHash(){
+    protected long computerMetadataHash(){
         int ret = 0;
         if(this.meta!=null) {
             ret = meta.getFileCreationTime().hashCode() * meta.getFileAlterTime().hashCode();
