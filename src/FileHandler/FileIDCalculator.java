@@ -6,7 +6,7 @@ import Utils.SHA256Hash;
 
 public class FileIDCalculator {
 
-    private static SHA256Hash hasher;
+    protected static SHA256Hash hasher = null;
     protected int senderID;
     protected String referenceChunk;
     protected FileMetadataObtainer meta=null;
@@ -43,6 +43,9 @@ public class FileIDCalculator {
      * @return sha-256 hash of the fileID
      */
     protected String HashFileID(String fileID){
+        if(hasher==null) {
+            hasher = new SHA256Hash();
+        }
         return hasher.Hash(fileID);
     }
 
@@ -85,6 +88,7 @@ public class FileIDCalculator {
      * @throws IOException when the filepath supplied doesnt allows us to find the requested file
      */
     public FileIDCalculator(String startChunk,String filepath,int senderID) throws IOException {
+        hasher = new SHA256Hash();
         this.senderID = senderID;
         this.referenceChunk = startChunk;
         this.meta = new FileMetadataObtainer(filepath);
