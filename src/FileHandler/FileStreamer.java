@@ -31,7 +31,7 @@ public class FileStreamer {
      * @return the chunk read as a string
      * @throws IOException in case there is an error while reading
      */
-    public String read() throws IOException {
+    public synchronized String read() throws IOException {
         if(this.file==null){
             this.setNewFile(this.filename);
             if(this.file==null){
