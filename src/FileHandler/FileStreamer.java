@@ -5,9 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileStreamer {
-    private int chunkSize;
-    private FileInputStream file = null;
-    private String filename;
+    protected int                   chunkSize;
+    protected FileInputStream       file = null;
+    protected String                filename;
+
+
+    protected FileStreamer(){}
 
     /**
      * Constructor fot the file streamer class object , this constructor open the file to stream read and
@@ -50,7 +53,10 @@ public class FileStreamer {
      * @throws IOException in case the file is not properly closed
      */
     public void close() throws IOException {
-        this.file.close();
+        if(this.file!=null) {
+            this.file.close();
+        }
+        this.file = null;
     }
 
     /**
@@ -63,12 +69,16 @@ public class FileStreamer {
     public int setNewFile(String filename) {
         this.filename = filename;
         try {
-            this.close();
+            if(this.file!=null) {
+                this.close();
+            }
         } catch (IOException e) {
             System.out.println("[ERROR] @FileStreamer:setNewFile:closeOldFile - Failed to close file");
         }
         try {
-            this.file = new FileInputStream(this.filename);
+            if(this.filename!=null) {
+                this.file = new FileInputStream(this.filename);
+            }
         } catch (FileNotFoundException e) {
             System.out.println("[ERROR] @FileStreamer:setNewFile:openNewFile - Failed to find specified file:" + filename);
             this.file = null;
