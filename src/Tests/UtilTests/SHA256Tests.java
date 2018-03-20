@@ -26,7 +26,7 @@ public class SHA256Tests extends SHA256Hash {
     }
 
     @Test
-    public void encodedByteToStringHashTest() throws NoSuchAlgorithmException {
+    public void encodedByteToStringHashTest() {
         String toTest = "testString";
         String sha256equiv = "4acf0b39d9c4766709a3689f553ac01ab550545ffa4544dfc0b2cea82fba02a3";
 

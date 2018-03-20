@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PeerMain {
-  public static void main(String args[]) throws NoSuchAlgorithmException {
+  public static void main(String args[]) {
     for (Path root : FileSystems.getDefault().getRootDirectories()) {
       System.nanoTime();
       System.out.print(root + ": ");
