@@ -7,6 +7,7 @@ import java.io.IOException;
 public class putchunkMessage extends Message {
 
     private int replicationDeg;
+    private String body;
 
     /**
      *
@@ -14,12 +15,13 @@ public class putchunkMessage extends Message {
      * @param chunkNO
      * @param FileID
      */
-    public putchunkMessage(int senderID,int chunkNO,String FileID,int replicationDeg){
+    public putchunkMessage(int senderID,int chunkNO,String FileID,int replicationDeg,String body){
         this.messageType = "PUTCHUNK";
         this.senderID = senderID;
         this.chunkNO = chunkNO;
         this.FileID = FileID;
         this.replicationDeg = replicationDeg;
+        this.body = body;
     }
 
     /**
@@ -29,11 +31,12 @@ public class putchunkMessage extends Message {
      * @param startChunk
      * @param filename
      */
-    public putchunkMessage(int senderID,int chunkNO,String startChunk,String filename,int replicationDeg) throws IOException {
+    public putchunkMessage(int senderID,int chunkNO,String startChunk,String filename,int replicationDeg,String body) throws IOException {
         this.messageType = "PUTCHUNK";
         this.senderID = senderID;
         this.chunkNO = chunkNO;
         this.replicationDeg = replicationDeg;
+        this.body = body;
         this.FileID = this.calculateFileID(startChunk,filename);
     }
 
@@ -57,7 +60,7 @@ public class putchunkMessage extends Message {
     public String toString(){
         String ret = this.messageType + " " + this.protocolVersion;
         ret += " " + this.senderID + " " + this.FileID + " ";
-        ret += this.chunkNO + " " + this.replicationDeg;
+        ret += this.chunkNO + " " + this.replicationDeg + "\r\n"+"\r\n";
         return ret;
     }
 
