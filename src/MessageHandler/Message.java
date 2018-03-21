@@ -1,5 +1,9 @@
 package MessageHandler;
 
+import FileHandler.FileIDCalculator;
+
+import java.io.IOException;
+
 public abstract class Message {
 
     protected String        protocolVersion = "1.0";    // The protocol version 1.0 by default
@@ -102,6 +106,18 @@ public abstract class Message {
      */
     public static Message ParseMessage(String message){
         return null;
+    }
+
+    /**
+     * calculates the file id
+     * @param startChunk the start chunk of data from the file we are transmiting
+     * @param Filename the filename of the file we are sending
+     * @return string containing the file if
+     * @throws IOException in case the specified file is not found
+     */
+    protected String calculateFileID(String startChunk,String Filename) throws IOException {
+        FileIDCalculator cal = new FileIDCalculator(startChunk,Filename,this.senderID);
+        return cal.calculateFileID();
     }
 
 }
