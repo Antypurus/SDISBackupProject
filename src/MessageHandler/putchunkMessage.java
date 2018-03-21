@@ -10,10 +10,10 @@ public class putchunkMessage extends Message {
     private String body = null;
 
     /**
-     *
-     * @param senderID
-     * @param chunkNO
-     * @param FileID
+     * Constructor for the message for when we already have the file id
+     * @param senderID the sender id
+     * @param chunkNO the chunk number
+     * @param FileID the file id
      */
     public putchunkMessage(int senderID,int chunkNO,String FileID){
         this.messageType = "PUTCHUNK";
@@ -23,11 +23,13 @@ public class putchunkMessage extends Message {
     }
 
     /**
-     *
-     * @param senderID
-     * @param chunkNO
-     * @param startChunk
-     * @param filename
+     * Constructor for when we do not have the file id, we pass it extra information because of this so that it can
+     * calculate the file id
+     * @param senderID the sender id
+     * @param chunkNO the chunk number
+     * @param startChunk chunk of data from the beggining of the file
+     * @param filename filename of the file we are sending
+     * @throws IOException In case the specified file is not found
      */
     public putchunkMessage(int senderID,int chunkNO,String startChunk,String filename) throws IOException {
         this.messageType = "PUTCHUNK";
@@ -37,11 +39,11 @@ public class putchunkMessage extends Message {
     }
 
     /**
-     *
-     * @param startChunk
-     * @param Filename
-     * @return
-     * @throws IOException
+     * calculates the file id
+     * @param startChunk the start chunk of data from the file we are transmiting
+     * @param Filename the filename of the file we are sending
+     * @return string containing the file if
+     * @throws IOException in case the specified file is not found
      */
     private String calculateFileID(String startChunk,String Filename) throws IOException {
         FileIDCalculator cal = new FileIDCalculator(startChunk,Filename,this.senderID);
@@ -49,8 +51,8 @@ public class putchunkMessage extends Message {
     }
 
     /**
-     *
-     * @return
+     * Converts the class to its tring message representation
+     * @return string with the message in string formate ready to be sent through the network
      */
     @Override
     public String toString(){
@@ -65,32 +67,32 @@ public class putchunkMessage extends Message {
     }
 
     /**
-     *
-     * @return
+     * obtain the specified replication degree
+     * @return the replication degree
      */
     public int getReplicationDeg() {
         return replicationDeg;
     }
 
     /**
-     *
-     * @param replicationDeg
+     * sets the desired replication degree
+     * @param replicationDeg the value to give the replication degree
      */
     public void setReplicationDeg(int replicationDeg) {
         this.replicationDeg = replicationDeg;
     }
 
     /**
-     *
-     * @return
+     * Obtain the body contents of this message
+     * @return the body
      */
     public String getBody() {
         return body;
     }
 
     /**
-     *
-     * @param body
+     * sets the body content of this message
+     * @param body the value to give the body
      */
     public void setBody(String body) {
         this.body = body;
