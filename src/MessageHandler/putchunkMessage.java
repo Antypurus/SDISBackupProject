@@ -60,6 +60,7 @@ public class putchunkMessage extends Message {
         String ret = this.messageType + " " + this.protocolVersion;
         ret += " " + this.senderID + " " + this.FileID + " ";
         ret += this.chunkNO + " " + this.replicationDeg + "\r\n"+"\r\n"+" "+this.body;
+        ret = ret.trim();
         return ret;
     }
 
@@ -94,4 +95,5 @@ public class putchunkMessage extends Message {
     public void setBody(String body) {
         this.body = body;
     }
+
 }
