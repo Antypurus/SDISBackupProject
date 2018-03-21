@@ -2,11 +2,11 @@ package MessageHandler;
 
 public abstract class Message {
 
-    private String        protocolVersion = "1.0";
-    private int           senderID;
-    private String        FileID;
-    private int           chunkNO;
-    private String        messageType;
+    protected String        protocolVersion = "1.0";
+    protected int           senderID;
+    protected String        FileID;
+    protected int           chunkNO;
+    protected String        messageType;
 
     @Override
     public abstract String toString();
