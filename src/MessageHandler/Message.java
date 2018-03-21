@@ -9,7 +9,7 @@ public abstract class Message {
     protected String        messageType;
 
     /**
-     * 
+     *
      * @return
      */
     @Override
