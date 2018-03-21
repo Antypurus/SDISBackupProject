@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public class putchunkMessage extends Message {
 
-    private int replicationDeg;
-    private String body;
+    private int replicationDeg = -1;
+    private String body = null;
 
     /**
      *
@@ -15,13 +15,11 @@ public class putchunkMessage extends Message {
      * @param chunkNO
      * @param FileID
      */
-    public putchunkMessage(int senderID,int chunkNO,String FileID,int replicationDeg,String body){
+    public putchunkMessage(int senderID,int chunkNO,String FileID){
         this.messageType = "PUTCHUNK";
         this.senderID = senderID;
         this.chunkNO = chunkNO;
         this.FileID = FileID;
-        this.replicationDeg = replicationDeg;
-        this.body = body;
     }
 
     /**
@@ -31,12 +29,10 @@ public class putchunkMessage extends Message {
      * @param startChunk
      * @param filename
      */
-    public putchunkMessage(int senderID,int chunkNO,String startChunk,String filename,int replicationDeg,String body) throws IOException {
+    public putchunkMessage(int senderID,int chunkNO,String startChunk,String filename) throws IOException {
         this.messageType = "PUTCHUNK";
         this.senderID = senderID;
         this.chunkNO = chunkNO;
-        this.replicationDeg = replicationDeg;
-        this.body = body;
         this.FileID = this.calculateFileID(startChunk,filename);
     }
 
@@ -58,9 +54,12 @@ public class putchunkMessage extends Message {
      */
     @Override
     public String toString(){
+        if(this.body==null || this.replicationDeg==-1){
+            return null;
+        }
         String ret = this.messageType + " " + this.protocolVersion;
         ret += " " + this.senderID + " " + this.FileID + " ";
-        ret += this.chunkNO + " " + this.replicationDeg + "\r\n"+"\r\n";
+        ret += this.chunkNO + " " + this.replicationDeg + "\r\n"+"\r\n"+" "+this.body;
         return ret;
     }
 
@@ -78,5 +77,21 @@ public class putchunkMessage extends Message {
      */
     public void setReplicationDeg(int replicationDeg) {
         this.replicationDeg = replicationDeg;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getBody() {
+        return body;
+    }
+
+    /**
+     *
+     * @param body
+     */
+    public void setBody(String body) {
+        this.body = body;
     }
 }
