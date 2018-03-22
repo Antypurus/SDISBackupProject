@@ -9,7 +9,7 @@ public class storedMessage extends Message{
      * @param chunkNo
      */
     public storedMessage(int senderID,String fileID,int chunkNo){
-        this.messageType = "STORED";
+        this.messageType = MessageHandler.messageType.STORED;
         this.senderID = senderID;
         this.FileID = fileID;
         this.chunkNO = chunkNo;
@@ -21,7 +21,7 @@ public class storedMessage extends Message{
      */
     @Override
     public String toString() {
-        String ret = this.messageType+" "+this.protocolVersion+" ";
+        String ret = this.messageType.name()+" "+this.protocolVersion+" ";
         ret+=this.senderID+" "+this.FileID+" "+this.chunkNO+" \r\n \r\n";
         return ret.trim();
     }

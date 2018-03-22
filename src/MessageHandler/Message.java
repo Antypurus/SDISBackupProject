@@ -6,11 +6,11 @@ import java.io.IOException;
 
 public abstract class Message {
 
-    protected String        protocolVersion = "1.0";    // The protocol version 1.0 by default
-    protected int           senderID;                   // The Sender ID , Message Specific
-    protected String        FileID;                     // The File ID , File specific
-    protected int           chunkNO;                    // The Chunk Number of the message, message and file specific
-    protected String        messageType;                // The Message Type, Message Specific
+    protected String                    protocolVersion = "1.0";    // The protocol version 1.0 by default
+    protected int                       senderID;                   // The Sender ID , Message Specific
+    protected String                    FileID;                     // The File ID , File specific
+    protected int                       chunkNO;                    // The Chunk Number of the message, message and file specific
+    protected messageType               messageType;                // The Message Type, Message Specific
 
     /**
      * Converts the Message class to its string representation
@@ -87,7 +87,7 @@ public abstract class Message {
      * obtain the message type of the message
      * @return the message type
      */
-    public String getMessageType() {
+    public messageType getMessageType() {
         return messageType;
     }
 
@@ -95,7 +95,7 @@ public abstract class Message {
      * set the message type of the message
      * @param messageType value to give the message type
      */
-    public void setMessageType(String messageType) {
+    public void setMessageType(messageType messageType) {
         this.messageType = messageType;
     }
 
@@ -105,7 +105,14 @@ public abstract class Message {
      * @return message object representing the message
      */
     public static Message ParseMessage(String message){
-        return null;
+       String[] components =  message.split("\\n\\r\\s+\\n\\r");
+       int len = components.length;
+       if(len==1){
+
+       }else if(len==2){
+
+       }
+       return null;
     }
 
     /**

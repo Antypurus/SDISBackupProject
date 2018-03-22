@@ -3,7 +3,7 @@ package MessageHandler;
 public class removedMessage extends  Message{
 
     public removedMessage(int senderID,String fileID,int chunkNo){
-        this.messageType = "REMOVED";
+        this.messageType = MessageHandler.messageType.REMOVED;
         this.chunkNO = chunkNo;
         this.senderID = senderID;
         this.FileID = fileID;
@@ -15,7 +15,7 @@ public class removedMessage extends  Message{
      */
     @Override
     public String toString() {
-        String ret = this.messageType+" "+this.protocolVersion+" ";
+        String ret = this.messageType.name()+" "+this.protocolVersion+" ";
         ret+=this.FileID+" "+this.chunkNO+" \r\n \r\n";
         return ret.trim();
     }

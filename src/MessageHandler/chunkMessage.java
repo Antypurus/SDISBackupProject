@@ -11,7 +11,7 @@ public class chunkMessage extends Message{
      * @param FileID
      */
     public chunkMessage(int senderID,int chunkNO,String FileID){
-        this.messageType = "CHUNK";
+        this.messageType = MessageHandler.messageType.CHUNK;
         this.senderID = senderID;
         this.chunkNO = chunkNO;
         this.FileID = FileID;
@@ -42,7 +42,7 @@ public class chunkMessage extends Message{
         if(this.body==null){
             return null;
         }
-        String ret = this.messageType + " " + this.protocolVersion;
+        String ret = this.messageType.name() + " " + this.protocolVersion;
         ret += " " + this.senderID + " " + this.FileID + " ";
         ret += this.chunkNO  + " \r\n"+" \r\n"+" "+this.body;
         ret = ret.trim();

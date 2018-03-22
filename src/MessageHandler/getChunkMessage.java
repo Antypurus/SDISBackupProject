@@ -11,7 +11,7 @@ public class getChunkMessage extends Message{
      * @param chunkNo
      */
     public getChunkMessage(int senderID,String fileID,int chunkNo){
-        this.messageType = "GETCHUNK";
+        this.messageType = MessageHandler.messageType.GETCHUNK;
         this.senderID = senderID;
         this.FileID = fileID;
         this.chunkNO = chunkNo;
@@ -26,7 +26,7 @@ public class getChunkMessage extends Message{
      * @throws IOException
      */
     public getChunkMessage(int senderID,int chunkNo,String startChunk,String filename) throws IOException {
-        this.messageType = "GETCHUNK";
+        this.messageType = MessageHandler.messageType.GETCHUNK;
         this.senderID = senderID;
         this.chunkNO = chunkNo;
         this.FileID = this.calculateFileID(startChunk,filename);
@@ -38,7 +38,7 @@ public class getChunkMessage extends Message{
      */
     @Override
     public String toString() {
-        String ret = this.messageType+" "+this.protocolVersion+" ";
+        String ret = this.messageType.name()+" "+this.protocolVersion+" ";
         ret+=this.senderID+" "+this.FileID+" "+this.chunkNO+" \r\n \r\n";
         return ret.trim();
     }

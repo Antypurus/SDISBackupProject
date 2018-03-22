@@ -10,7 +10,7 @@ public class deleteMessage extends Message{
      * @param fileID
      */
     public deleteMessage(int senderID,String fileID){
-        this.messageType = "DELETE";
+        this.messageType = MessageHandler.messageType.DELETE;
         this.senderID = senderID;
         this.FileID = fileID;
     }
@@ -23,7 +23,7 @@ public class deleteMessage extends Message{
      * @throws IOException
      */
     public deleteMessage(int senderID,String startChunk,String filename) throws IOException{
-        this.messageType = "DELETE";
+        this.messageType = MessageHandler.messageType.DELETE;
         this.senderID = senderID;
         this.FileID = this.calculateFileID(startChunk,filename);
     }
@@ -34,7 +34,7 @@ public class deleteMessage extends Message{
      */
     @Override
     public String toString() {
-        String ret=this.messageType+" "+this.protocolVersion+" ";
+        String ret=this.messageType.name()+" "+this.protocolVersion+" ";
         ret+=this.senderID+" "+this.FileID+" \r\n \r\n";
         return ret.trim();
     }

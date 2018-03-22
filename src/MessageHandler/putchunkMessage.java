@@ -14,7 +14,7 @@ public class putchunkMessage extends Message {
      * @param FileID the file id
      */
     public putchunkMessage(int senderID,int chunkNO,String FileID){
-        this.messageType = "PUTCHUNK";
+        this.messageType = MessageHandler.messageType.PUTCHUNK;
         this.senderID = senderID;
         this.chunkNO = chunkNO;
         this.FileID = FileID;
@@ -30,7 +30,7 @@ public class putchunkMessage extends Message {
      * @throws IOException In case the specified file is not found
      */
     public putchunkMessage(int senderID,int chunkNO,String startChunk,String filename) throws IOException {
-        this.messageType = "PUTCHUNK";
+        this.messageType = MessageHandler.messageType.PUTCHUNK;
         this.senderID = senderID;
         this.chunkNO = chunkNO;
         this.FileID = this.calculateFileID(startChunk,filename);
@@ -45,7 +45,7 @@ public class putchunkMessage extends Message {
         if(this.body==null || this.replicationDeg==-1){
             return null;
         }
-        String ret = this.messageType + " " + this.protocolVersion;
+        String ret = this.messageType.name() + " " + this.protocolVersion;
         ret += " " + this.senderID + " " + this.FileID + " ";
         ret += this.chunkNO + " " + this.replicationDeg + "\r\n"+"\r\n"+" "+this.body;
         ret = ret.trim();
