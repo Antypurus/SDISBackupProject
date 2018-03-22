@@ -152,28 +152,56 @@ public abstract class Message {
         MessageHandler.messageType type = Message.getType(headerArgs[0]);
        switch (type){
            case PUTCHUNK: {
-               break;
+               if(body==null){
+                   return null;
+               }
+               int senderID = Integer.parseInt(headerArgs[0]);
+               String fileID = headerArgs[1];
+               int chunkNo = Integer.parseInt(headerArgs[2]);
+               int replicationDeg = Integer.parseInt(headerArgs[3]);
+               putchunkMessage ret = new putchunkMessage(senderID, chunkNo, fileID);
+               ret.setBody(body);
+               ret.setReplicationDeg(replicationDeg);
+               return ret;
            }
            case STORED: {
-               break;
+               int senderID = Integer.parseInt(headerArgs[0]);
+               String fileID = headerArgs[1];
+               int chunkNo = Integer.parseInt(headerArgs[2]);
+               return new storedMessage(senderID,fileID,chunkNo);
            }
            case CHUNK: {
-               break;
+               if(body==null){
+                   return null;
+               }
+               int senderID = Integer.parseInt(headerArgs[0]);
+               String fileID = headerArgs[1];
+               int chunkNo = Integer.parseInt(headerArgs[2]);
+               chunkMessage ret = new chunkMessage(senderID, chunkNo, fileID);
+               ret.setBody(body);
+               return ret;
            }
            case DELETE: {
-               break;
+               int senderID = Integer.parseInt(headerArgs[0]);
+               String fileID = headerArgs[1];
+               return new deleteMessage(senderID,fileID);
            }
            case REMOVED: {
-               break;
+               int senderID = Integer.parseInt(headerArgs[0]);
+               String fileID = headerArgs[1];
+               int chunkNo = Integer.parseInt(headerArgs[2]);
+               return new removedMessage(senderID,fileID,chunkNo);
            }
            case GETCHUNK: {
-               break;
+               int senderID = Integer.parseInt(headerArgs[0]);
+               String fileID = headerArgs[1];
+               int chunkNo = Integer.parseInt(headerArgs[2]);
+               return new getChunkMessage(senderID,fileID,chunkNo);
            }
            default:{
                 return null;
            }
        }
-       return null;
     }
 
     /**
