@@ -2,6 +2,12 @@ package MessageHandler;
 
 public class removedMessage extends  Message{
 
+    /**
+     *  constructor for the removed message
+     * @param senderID the sender id
+     * @param fileID the file id
+     * @param chunkNo the chunk number
+     */
     public removedMessage(int senderID,String fileID,int chunkNo){
         this.messageType = MessageHandler.messageType.REMOVED;
         this.chunkNO = chunkNo;
