@@ -10,8 +10,8 @@ public class removedMessage extends  Message{
     }
 
     /**
-     *
-     * @return
+     * converts the message to its string representation
+     * @return string represeting message
      */
     @Override
     public String toString() {

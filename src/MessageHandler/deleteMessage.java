@@ -5,9 +5,9 @@ import java.io.IOException;
 public class deleteMessage extends Message{
 
     /**
-     *
-     * @param senderID
-     * @param fileID
+     * constructor for the delete message for when the file id is known
+     * @param senderID the sender id
+     * @param fileID the file id
      */
     public deleteMessage(int senderID,String fileID){
         this.messageType = MessageHandler.messageType.DELETE;
@@ -16,11 +16,11 @@ public class deleteMessage extends Message{
     }
 
     /**
-     *
-     * @param senderID
-     * @param startChunk
-     * @param filename
-     * @throws IOException
+     * constructor for the delete message for when the fil eid is not known
+     * @param senderID the sender id
+     * @param startChunk small chunk from the beggining of the file being sent
+     * @param filename filename of the file being sent
+     * @throws IOException in case the specified file is not found
      */
     public deleteMessage(int senderID,String startChunk,String filename) throws IOException{
         this.messageType = MessageHandler.messageType.DELETE;
@@ -29,8 +29,8 @@ public class deleteMessage extends Message{
     }
 
     /**
-     *
-     * @return
+     * converts the message to its string representation
+     * @return string representing the message
      */
     @Override
     public String toString() {

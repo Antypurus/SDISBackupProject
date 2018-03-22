@@ -3,10 +3,10 @@ package MessageHandler;
 public class storedMessage extends Message{
 
     /**
-     *
-     * @param senderID
-     * @param fileID
-     * @param chunkNo
+     * constructor for the stored message
+     * @param senderID the sender id
+     * @param fileID the file if
+     * @param chunkNo the chunknumber
      */
     public storedMessage(int senderID,String fileID,int chunkNo){
         this.messageType = MessageHandler.messageType.STORED;
@@ -16,8 +16,8 @@ public class storedMessage extends Message{
     }
 
     /**
-     *
-     * @return
+     * Converts the message to its string representation
+     * @return the string representing message
      */
     @Override
     public String toString() {

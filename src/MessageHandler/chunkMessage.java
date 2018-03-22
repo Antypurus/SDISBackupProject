@@ -5,10 +5,10 @@ public class chunkMessage extends Message{
     private String body = null;
 
     /**
-     *
-     * @param senderID
-     * @param chunkNO
-     * @param FileID
+     * constructor for the chunk message it
+     * @param senderID the sender id
+     * @param chunkNO the chunk number
+     * @param FileID the file id
      */
     public chunkMessage(int senderID,int chunkNO,String FileID){
         this.messageType = MessageHandler.messageType.CHUNK;
@@ -34,8 +34,8 @@ public class chunkMessage extends Message{
     }
 
     /**
-     *
-     * @return
+     * convert the message to its string representation
+     * @return string representing the message
      */
     @Override
     public String toString() {
