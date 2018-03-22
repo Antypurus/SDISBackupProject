@@ -16,5 +16,28 @@ public class threadRegistry {
         this.threadRegistry = new ConcurrentHashMap<>();
     }
 
+    /**
+     *
+     * @param stub
+     * @param chunkNo
+     * @param fileID
+     */
+    public void addThread(MessageStub stub,int chunkNo,String fileID){
+        this.threadRegistry.put(new Pair<>(fileID,chunkNo),stub);
+    }
+
+    /**
+     *
+     * @param chunkNo
+     * @param fileId
+     * @return
+     */
+    public MessageStub getThread(int chunkNo,String fileId){
+        Pair<String,Integer> key = new Pair<>(fileId,chunkNo);
+        if(!this.threadRegistry.containsKey(key)){
+            return null;
+        }
+        return this.threadRegistry.get(key);
+    }
 
 }
