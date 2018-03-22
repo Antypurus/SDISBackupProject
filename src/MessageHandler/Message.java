@@ -99,7 +99,7 @@ public abstract class Message {
         this.messageType = messageType;
     }
 
-    public messageType getType(String messageType){
+    public static messageType getType(String messageType){
         messageType ret;
         switch (messageType){
             case("PUTCHUNK"):{
@@ -142,10 +142,36 @@ public abstract class Message {
     public static Message ParseMessage(String message){
        String[] components =  message.split("\\n\\r\\s+\\n\\r");
        int len = components.length;
-       if(len==1){
 
-       }else if(len==2){
+        String[] headerArgs = components[0].split("\\s+");
+        String body = null;
+       if(len==2){
+           body = components[1].trim();
+       }
 
+        MessageHandler.messageType type = Message.getType(headerArgs[0]);
+       switch (type){
+           case PUTCHUNK: {
+               break;
+           }
+           case STORED: {
+               break;
+           }
+           case CHUNK: {
+               break;
+           }
+           case DELETE: {
+               break;
+           }
+           case REMOVED: {
+               break;
+           }
+           case GETCHUNK: {
+               break;
+           }
+           default:{
+                return null;
+           }
        }
        return null;
     }
