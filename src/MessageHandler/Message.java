@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public abstract class Message {
 
+    protected int                         replicationDeg = -1;
+    protected String                    body = null;
     protected String                    protocolVersion = "1.0";    // The protocol version 1.0 by default
     protected int                       senderID;                   // The Sender ID , Message Specific
     protected String                    FileID;                     // The File ID , File specific
@@ -97,6 +99,38 @@ public abstract class Message {
      */
     public void setMessageType(messageType messageType) {
         this.messageType = messageType;
+    }
+
+    /**
+     * Obtain the body contents of this message
+     * @return the body
+     */
+    public String getBody() {
+        return body;
+    }
+
+    /**
+     * sets the body content of this message
+     * @param body the value to give the body
+     */
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    /**
+     * obtain the specified replication degree
+     * @return the replication degree
+     */
+    public int getReplicationDeg() {
+        return replicationDeg;
+    }
+
+    /**
+     * sets the desired replication degree
+     * @param replicationDeg the value to give the replication degree
+     */
+    public void setReplicationDeg(int replicationDeg) {
+        this.replicationDeg = replicationDeg;
     }
 
     public static messageType getType(String messageType){

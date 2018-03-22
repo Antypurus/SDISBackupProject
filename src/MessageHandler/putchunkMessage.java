@@ -3,10 +3,6 @@ package MessageHandler;
 import java.io.IOException;
 
 public class putchunkMessage extends Message {
-
-    private int replicationDeg = -1;
-    private String body = null;
-
     /**
      * Constructor for the message for when we already have the file id
      * @param senderID the sender id
@@ -50,38 +46,6 @@ public class putchunkMessage extends Message {
         ret += this.chunkNO + " " + this.replicationDeg + "\r\n"+"\r\n"+" "+this.body;
         ret = ret.trim();
         return ret;
-    }
-
-    /**
-     * obtain the specified replication degree
-     * @return the replication degree
-     */
-    public int getReplicationDeg() {
-        return replicationDeg;
-    }
-
-    /**
-     * sets the desired replication degree
-     * @param replicationDeg the value to give the replication degree
-     */
-    public void setReplicationDeg(int replicationDeg) {
-        this.replicationDeg = replicationDeg;
-    }
-
-    /**
-     * Obtain the body contents of this message
-     * @return the body
-     */
-    public String getBody() {
-        return body;
-    }
-
-    /**
-     * sets the body content of this message
-     * @param body the value to give the body
-     */
-    public void setBody(String body) {
-        this.body = body;
     }
 
 }

@@ -2,8 +2,6 @@ package MessageHandler;
 
 public class chunkMessage extends Message{
 
-    private String body = null;
-
     /**
      * constructor for the chunk message it
      * @param senderID the sender id
@@ -15,22 +13,6 @@ public class chunkMessage extends Message{
         this.senderID = senderID;
         this.chunkNO = chunkNO;
         this.FileID = FileID;
-    }
-
-    /**
-     * Obtain the body contents of this message
-     * @return the body
-     */
-    public String getBody() {
-        return body;
-    }
-
-    /**
-     * sets the body content of this message
-     * @param body the value to give the body
-     */
-    public void setBody(String body) {
-        this.body = body;
     }
 
     /**
