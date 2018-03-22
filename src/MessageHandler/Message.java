@@ -99,6 +99,41 @@ public abstract class Message {
         this.messageType = messageType;
     }
 
+    public messageType getType(String messageType){
+        messageType ret;
+        switch (messageType){
+            case("PUTCHUNK"):{
+                ret= MessageHandler.messageType.PUTCHUNK;
+                break;
+            }
+            case("GETCHUNK"):{
+                ret= MessageHandler.messageType.GETCHUNK;
+                break;
+            }
+            case("STORED"):{
+                ret= MessageHandler.messageType.STORED;
+                break;
+            }
+            case("DELETE"):{
+                ret= MessageHandler.messageType.DELETE;
+                break;
+            }
+            case("REMOVED"):{
+                ret= MessageHandler.messageType.REMOVED;
+                break;
+            }
+            case("CHUNK"):{
+                ret= MessageHandler.messageType.CHUNK;
+                break;
+            }
+            default:{
+                ret=null;
+                break;
+            }
+        }
+        return ret;
+    }
+
     /**
      * Parse the message and create the appropriate message object
      * @param message the message to be parsed
