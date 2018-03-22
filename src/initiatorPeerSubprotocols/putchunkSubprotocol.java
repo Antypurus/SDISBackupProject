@@ -2,6 +2,7 @@ package initiatorPeerSubprotocols;
 
 import FileHandler.FileIDCalculator;
 import FileHandler.FileStreamer;
+import Utils.threadRegistry;
 
 import java.io.IOException;
 
@@ -13,8 +14,16 @@ public class putchunkSubprotocol {
     private String          filepath;
     private int             senderID;
     private String          fileID;
+    private threadRegistry  registry;
 
-    public putchunkSubprotocol(int senderID,String filepath) throws IOException {
+    /**
+     * 
+     * @param senderID
+     * @param filepath
+     * @param registry
+     * @throws IOException
+     */
+    public putchunkSubprotocol(int senderID, String filepath, threadRegistry registry) throws IOException {
         this.filepath = filepath;
         this.senderID = senderID;
 
