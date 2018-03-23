@@ -12,14 +12,12 @@ import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static MessageStubs.MessageStub.incomingQueue;
-
 public class putchunkStub implements MessageStub,Runnable {
     public Thread                   thread = null;
 
-    private Queue<Message>          incomingQueue = null;
-    private MulticastSocket         socket = null;
-    private String                  status = null;
+    private Queue<Message>          incomingQueue;
+    private MulticastSocket         socket;
+    private String                  status;
     private int                     counter=0;
 
     private int                     senderId;
