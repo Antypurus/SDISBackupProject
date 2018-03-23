@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class threadRegistry {
 
-    private ConcurrentHashMap<Pair<String,Integer>,MessageStub>threadRegistry;
+    public ConcurrentHashMap<Pair<String,Integer>,MessageStub>threadRegistry;
 
     /**
      *

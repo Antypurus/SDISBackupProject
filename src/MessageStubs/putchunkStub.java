@@ -106,6 +106,8 @@ public class putchunkStub implements MessageStub,Runnable {
             }
             if(inMsg==null){
                 System.out.println("Empty Message Found");
+                this.status="ENDED WITH ERROR";
+                this.run();
                 return;
             }
             if(inMsg.getMessageType()== messageType.STORED){
