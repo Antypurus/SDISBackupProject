@@ -2,6 +2,7 @@ package initiatorPeerSubprotocols;
 
 import FileHandler.FileIDCalculator;
 import FileHandler.FileStreamer;
+import MessageStubs.putchunkStub;
 import Utils.threadRegistry;
 
 import java.io.IOException;
@@ -38,12 +39,28 @@ public class putchunkSubprotocol {
         FileIDCalculator cal = new FileIDCalculator(this.startChunk,filepath,senderID);
         this.fileID = cal.calculateFileID();
 
-        //create stub object
-        //register stub object
-        //encapsulate in thread
-        //run it
+        putchunkStub stub = new putchunkStub(this.socket,this.senderID,0,this.fileID,this.startChunk,1);
+        this.registry.addThread(stub,0,this.fileID);
+        Thread trd = new Thread(stub);
+        stub.thread = trd;
+        trd.run();
 
-        //repeat until file has been read
+        String read="";
+        boolean stop = false;
+        int ctr = 0;
+        while(!stop){
+            read = stream.read();
+            if(read==null){
+                stop=true;
+                continue;
+            }
+            ctr++;
+            putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,1);
+            this.registry.addThread(stube,ctr,this.fileID);
+            Thread trdd = new Thread(stube);
+            stub.thread = trdd;
+            trdd.run();
+        }
     }
 
 }

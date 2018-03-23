@@ -1,26 +1,17 @@
 package Peer;
 
+import Utils.threadRegistry;
+import initiatorPeerSubprotocols.putchunkSubprotocol;
+
 import java.io.IOException;
-import java.nio.file.FileStore;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 
 public class PeerMain {
-  public static void main(String args[]) {
-    for (Path root : FileSystems.getDefault().getRootDirectories()) {
-      System.nanoTime();
-      System.out.print(root + ": ");
-      try {
-        FileStore store = Files.getFileStore(root);
-        double available = (store.getUsableSpace() / (Math.pow(10f, 9f)));
-        double totalS = (store.getTotalSpace() / (Math.pow(10f, 9f)));
-        System.out.println("available=" + available + ", total=" + totalS);
-      } catch (IOException e) {
-        System.out.println("error querying space: " + e.toString());
-      }
-    }
+  public static void main(String args[]) throws IOException {
+    threadRegistry registry = new threadRegistry();
+    MulticastSocket socket = new MulticastSocket(5151);
+    socket.joinGroup(InetAddress.getByName("224.0.0.15"));
+    putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket);
   }
 }
