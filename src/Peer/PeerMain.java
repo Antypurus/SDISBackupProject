@@ -13,5 +13,7 @@ public class PeerMain {
     MulticastSocket socket = new MulticastSocket(5151);
     socket.joinGroup(InetAddress.getByName("224.0.0.15"));
     putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket);
+    while(true){
+    }
   }
 }

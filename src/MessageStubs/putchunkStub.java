@@ -57,12 +57,10 @@ public class putchunkStub implements MessageStub,Runnable {
     public synchronized  Message getInboundMessage() throws InterruptedException {
         while (this.incomingQueue.isEmpty()){
             this.status = "WAITING FOR MESSAGES";
-            if(this.thread!=null) {
-                System.out.println("Thread "+this.thread.getId()+" Status: "+this.status);
-            }else{
-                System.out.println("Thread Status: "+this.status);
+            this.wait(3500);
+            if(this.incomingQueue.isEmpty()){
+                break;
             }
-            this.wait(3);
         }
         if(this.incomingQueue.isEmpty()) {
             return null;
@@ -105,6 +103,10 @@ public class putchunkStub implements MessageStub,Runnable {
                 if(inMsg==null){
                     e.printStackTrace();
                 }
+            }
+            if(inMsg==null){
+                System.out.println("Empty Message Found");
+                return;
             }
             if(inMsg.getMessageType()== messageType.STORED){
                 if(inMsg.getFileID().equals(this.fileId)){

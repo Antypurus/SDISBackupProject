@@ -43,7 +43,7 @@ public class putchunkSubprotocol {
         this.registry.addThread(stub,0,this.fileID);
         Thread trd = new Thread(stub);
         stub.thread = trd;
-        trd.run();
+        trd.start();
 
         String read="";
         boolean stop = false;
@@ -52,14 +52,14 @@ public class putchunkSubprotocol {
             read = stream.read();
             if(read==null){
                 stop=true;
-                continue;
+                break;
             }
             ctr++;
             putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,1);
             this.registry.addThread(stube,ctr,this.fileID);
             Thread trdd = new Thread(stube);
-            stub.thread = trdd;
-            trdd.run();
+            stube.thread = trdd;
+            trdd.start();
         }
     }
 
