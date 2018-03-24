@@ -3,6 +3,7 @@ package MessageStubs;
 import MessageHandler.Message;
 import MessageHandler.messageType;
 import MessageHandler.putchunkMessage;
+import MessageHandler.storedMessage;
 import Utils.Constants;
 import Utils.Logging;
 
@@ -146,7 +147,7 @@ public class putchunkStub implements MessageStub,Runnable {
             return -1;
         }
         try {
-            Logging.Log("[LOG]@putchunkStub:sendPacket-Thread<"+this.thread.getId()+">: sending chunk "+this.chunkNo);
+            Logging.Log("[LOG]@putchunkStub:sendPacket-Thread<"+this.thread.getId()+">:sending chunk "+this.chunkNo);
             this.socket.send(packet);
             return 0;
         } catch (IOException e) {
@@ -154,34 +155,47 @@ public class putchunkStub implements MessageStub,Runnable {
             return -1;
         }
     }
+    
+    private boolean validateMessage(Message message){
+        if(message==null){
+            Logging.LogError("[ERROR]@putchunkStub:Run-Thread<" + this.thread.getId() + ">No Response Message Found");
+            this.status="WAITING FOR MESSAGE";
+            return false;
+        }
+        if(message!=null) {
+            if (message.getMessageType() == messageType.STORED && message.getFileID().equals(this.fileId) &&message.getChunkNO() == this.chunkNo) {
+                this.counter++;
+                Logging.LogSuccess("[SUCCESS]@putchunkStub:Run-Thread<"+this.thread.getId()+">Response Message Validated Current Replication Degree is:"+this.counter);
+                return true;
+            }else{
+                Logging.LogError("[ERROR]@putchunkStub:Run-Thread<"+this.thread.getId()+">Invalid Message Received,this is not the corrent response to PUTCHUNK command message");
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void  timeout(){
+        //did not receive a message
+        this.counter = 0;
+        this.sendPacket(this.packet);
+    }
 
     @Override
     public void run() {
         this.sendMessage(this.message);
         while(true){
             Message inMsg=null;
+
             try {
                 inMsg = this.getInboundMessage();
             } catch (InterruptedException e){
-                if(inMsg==null){
-                    e.printStackTrace();
-                }
+                e.printStackTrace();
             }
+
+            this.validateMessage(inMsg);
             if(inMsg==null){
-                Logging.LogError("[ERROR]@putchunkStub:Run-Thread<" + this.thread.getId() + ">No Response Message Found");
-                this.status="ENDED WITH ERROR";
-                this.counter = 0;
-                this.sendPacket(this.packet);
-                continue;
-            }
-            if(inMsg!=null) {
-                if (inMsg.getMessageType() == messageType.STORED) {
-                    if (inMsg.getFileID().equals(this.fileId)) {
-                        if (inMsg.getChunkNO() == this.chunkNo) {
-                            this.counter++;
-                        }
-                    }
-                }
+                this.timeout();
             }
 
             if(counter>=replicationDeg){

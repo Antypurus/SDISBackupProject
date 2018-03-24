@@ -44,7 +44,7 @@ public class putchunkSubprotocol {
         FileIDCalculator cal = new FileIDCalculator(this.startChunk,filepath,senderID);
         this.fileID = cal.calculateFileID();
 
-        putchunkStub stub = new putchunkStub(this.socket,this.senderID,0,this.fileID,this.startChunk,1);
+        putchunkStub stub = new putchunkStub(this.socket,this.senderID,0,this.fileID,this.startChunk,10);
         stub.setAddressAndPort(this.address,this.port);
         this.registry.addThread(stub,0,this.fileID);
         Thread trd = new Thread(stub);
@@ -61,7 +61,7 @@ public class putchunkSubprotocol {
                 break;
             }
             ctr++;
-            putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,1);
+            putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,10);
             stube.setAddressAndPort(this.address,this.port);
             this.registry.addThread(stube,ctr,this.fileID);
             Thread trdd = new Thread(stube);
