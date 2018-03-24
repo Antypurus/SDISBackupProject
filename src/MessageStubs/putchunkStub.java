@@ -68,7 +68,7 @@ public class putchunkStub implements MessageStub,Runnable {
     public synchronized  Message getInboundMessage() throws InterruptedException {
         while (this.incomingQueue.isEmpty()){
             this.status = "WAITING FOR MESSAGES";
-            this.wait(1);
+            this.wait(3500);
             if(this.incomingQueue.isEmpty()){
                 break;
             }

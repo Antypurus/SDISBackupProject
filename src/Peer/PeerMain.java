@@ -16,7 +16,7 @@ public class PeerMain {
     MulticastSocket socket = new MulticastSocket(5151);
     socket.joinGroup(InetAddress.getByName("224.0.1.1"));
     putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket,InetAddress.getByName("224.0.1.1"),5151);
-    /*while(true){
+    while(true){
         Iterator it = registry.threadRegistry.entrySet().iterator();
         while (it.hasNext()) {
             ConcurrentHashMap.Entry pair = (ConcurrentHashMap.Entry)it.next();
@@ -24,6 +24,6 @@ public class PeerMain {
             System.out.println("Status:"+((MessageStub)pair.getValue()).checkStubStatus());
         }
         Thread.sleep(1500);
-    }*/
+    }
   }
 }
