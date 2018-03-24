@@ -3,6 +3,8 @@ package MessageStubs;
 import MessageHandler.Message;
 import MessageHandler.messageType;
 import MessageHandler.putchunkMessage;
+import Utils.Constants;
+import Utils.Logging;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -144,6 +146,7 @@ public class putchunkStub implements MessageStub,Runnable {
             return -1;
         }
         try {
+            Logging.Log("[LOG]@putchunkStub:sendPacket-Thread<"+this.thread.getId()+">: sending chunk "+this.chunkNo);
             this.socket.send(packet);
             return 0;
         } catch (IOException e) {
@@ -165,10 +168,10 @@ public class putchunkStub implements MessageStub,Runnable {
                 }
             }
             if(inMsg==null){
-                System.out.println("Empty Message Found");
+                Logging.LogError("[ERROR]@putchunkStub:Run-Thread<" + this.thread.getId() + ">No Response Message Found");
                 this.status="ENDED WITH ERROR";
                 this.counter = 0;
-                //this.sendPacket(this.packet);
+                this.sendPacket(this.packet);
                 continue;
             }
             if(inMsg!=null) {
