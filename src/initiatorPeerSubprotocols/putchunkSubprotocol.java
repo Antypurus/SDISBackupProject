@@ -6,6 +6,7 @@ import MessageStubs.putchunkStub;
 import Utils.threadRegistry;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 public class putchunkSubprotocol {
@@ -18,6 +19,8 @@ public class putchunkSubprotocol {
     private int             senderID;
     private String          fileID;
     private threadRegistry  registry;
+    private InetAddress     address;
+    private int             port;
 
     /**
      *
@@ -27,11 +30,13 @@ public class putchunkSubprotocol {
      * @param socket
      * @throws IOException
      */
-    public putchunkSubprotocol(int senderID, String filepath, threadRegistry registry, MulticastSocket socket) throws IOException {
-        this.filepath = filepath;
-        this.senderID = senderID;
-        this.registry = registry;
-        this.socket = socket;
+    public putchunkSubprotocol(int senderID, String filepath, threadRegistry registry, MulticastSocket socket, InetAddress addr,int port) throws IOException {
+        this.filepath   = filepath;
+        this.senderID   = senderID;
+        this.registry   = registry;
+        this.socket     = socket;
+        this.address    = addr;
+        this.port       = port;
 
         FileStreamer stream = new FileStreamer(this.CHUNK_BODY_SIZE,filepath);
         this.startChunk = stream.read();
@@ -40,6 +45,7 @@ public class putchunkSubprotocol {
         this.fileID = cal.calculateFileID();
 
         putchunkStub stub = new putchunkStub(this.socket,this.senderID,0,this.fileID,this.startChunk,1);
+        stub.setAddressAndPort(this.address,this.port);
         this.registry.addThread(stub,0,this.fileID);
         Thread trd = new Thread(stub);
         stub.thread = trd;
@@ -56,6 +62,7 @@ public class putchunkSubprotocol {
             }
             ctr++;
             putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,1);
+            stube.setAddressAndPort(this.address,this.port);
             this.registry.addThread(stube,ctr,this.fileID);
             Thread trdd = new Thread(stube);
             stube.thread = trdd;

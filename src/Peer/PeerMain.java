@@ -14,8 +14,8 @@ public class PeerMain {
   public static void main(String args[]) throws IOException, InterruptedException {
     threadRegistry registry = new threadRegistry();
     MulticastSocket socket = new MulticastSocket(5151);
-    socket.joinGroup(InetAddress.getByName("224.0.0.15"));
-    putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket);
+    socket.joinGroup(InetAddress.getByName("224.0.1.1"));
+    putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket,InetAddress.getByName("224.0.1.1"),5151);
     /*while(true){
         Iterator it = registry.threadRegistry.entrySet().iterator();
         while (it.hasNext()) {
