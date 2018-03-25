@@ -3,6 +3,7 @@ package Utils;
 public class Constants {
     //Logging configuration values
     public static final boolean LOG = true;
+    public static final boolean FATAL_LOG = true;
 
     //text colors
     public static final String ANSI_RESET = "\u001B[0m";
