@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public abstract class Message {
 
-    protected int                         replicationDeg = -1;
+    protected int                       replicationDeg = -1;
     protected String                    body = null;
     protected String                    protocolVersion = "1.0";    // The protocol version 1.0 by default
     protected int                       senderID;                   // The Sender ID , Message Specific
@@ -135,10 +135,11 @@ public abstract class Message {
 
     public static messageType getType(String messageType){
         messageType ret;
+        System.out.println(messageType);
         switch (messageType){
             case("PUTCHUNK"):{
                 ret= MessageHandler.messageType.PUTCHUNK;
-                break;
+                return ret;
             }
             case("GETCHUNK"):{
                 ret= MessageHandler.messageType.GETCHUNK;
@@ -174,8 +175,10 @@ public abstract class Message {
      * @return message object representing the message
      */
     public static Message ParseMessage(String message){
-       String[] components =  message.split("\\n\\r\\s+\\n\\r");
+       String[] components =  message.split("\\r\\n\\s*\\r\\n");
        int len = components.length;
+
+       System.out.println("Message Parse:"+len);
 
         String[] headerArgs = components[0].split("\\s+");
         String body = null;
@@ -189,10 +192,10 @@ public abstract class Message {
                if(body==null){
                    return null;
                }
-               int senderID = Integer.parseInt(headerArgs[0]);
-               String fileID = headerArgs[1];
-               int chunkNo = Integer.parseInt(headerArgs[2]);
-               int replicationDeg = Integer.parseInt(headerArgs[3]);
+               int senderID = Integer.parseInt(headerArgs[2]);
+               String fileID = headerArgs[3];
+               int chunkNo = Integer.parseInt(headerArgs[4]);
+               int replicationDeg = Integer.parseInt(headerArgs[5]);
                putchunkMessage ret = new putchunkMessage(senderID, chunkNo, fileID);
                ret.setBody(body);
                ret.setReplicationDeg(replicationDeg);

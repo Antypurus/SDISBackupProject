@@ -2,6 +2,7 @@ package Peer;
 
 import MessageStubs.MessageStub;
 import Utils.threadRegistry;
+import initiatorPeerSubprotocols.initiatorPeerDispatcher;
 import initiatorPeerSubprotocols.putchunkSubprotocol;
 
 import java.io.IOException;
@@ -15,6 +16,11 @@ public class PeerMain {
     threadRegistry registry = new threadRegistry();
     MulticastSocket socket = new MulticastSocket(5151);
     socket.joinGroup(InetAddress.getByName("224.0.1.1"));
+
+    initiatorPeerDispatcher dispatcher = new initiatorPeerDispatcher(socket,registry);
+    Thread thread = new Thread(dispatcher);
+    thread.start();
+
     putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket,InetAddress.getByName("224.0.1.1"),5151);
     /**
     while(true){
