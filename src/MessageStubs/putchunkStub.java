@@ -23,6 +23,7 @@ public class putchunkStub implements MessageStub,Runnable {
     private int                     port = 0;
 
     private DatagramPacket          packet = null;
+    private int                     timeoutPeriod = 1000;
 
     private int                     senderId;
     private int                     chunkNo;
@@ -68,7 +69,7 @@ public class putchunkStub implements MessageStub,Runnable {
     public synchronized  Message getInboundMessage() throws InterruptedException {
         while (this.incomingQueue.isEmpty()){
             this.status = "WAITING FOR MESSAGES";
-            this.wait(3500);
+            this.wait(this.timeoutPeriod);
             if(this.incomingQueue.isEmpty()){
                 break;
             }
@@ -198,19 +199,27 @@ public class putchunkStub implements MessageStub,Runnable {
 
             this.validateMessage(inMsg);
             if(inMsg==null){
-                if(timeout>3){
-                    Logging.FatalErrorLog("Thread Timeout Limit Reached Killing Putchunk Thread "+this.thread.getId());
+                if(counter>=replicationDeg){
+                    Logging.FatalSuccessLog("Desired Replication Degree Reached Killing Putchunk Thread "+this.thread.getId());
                     return;
+                }else {
+                    if (timeout >= 5) {
+                        Logging.FatalErrorLog("Thread Timeout Limit Reached Killing Putchunk Thread " + this.thread.getId());
+                        return;
+                    }
+                    timeout++;
+                    this.timeoutPeriod = this.timeoutPeriod * 2;
+                    this.timeout();
+                    continue;
                 }
-                timeout++;
-                this.timeout();
-                continue;
             }
 
+            /**
             if(counter>=replicationDeg){
                 Logging.FatalSuccessLog("Desired Replication Degree Reached Killing Putchunk Thread "+this.thread.getId());
                 return;
             }
+             **/
         }
     }
 }
