@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -118,6 +117,7 @@ public class putchunkStub implements MessageStub,Runnable {
      */
     @Override
     public int sendMessage(Message message) {
+        this.status = "SENDING MESSAGE";
         if(this.address==null||this.port==0){
             return -1;
         }
@@ -143,6 +143,7 @@ public class putchunkStub implements MessageStub,Runnable {
      */
     @Override
     public int sendPacket(DatagramPacket packet) {
+        this.status = "SENDING PACKET";
         if(packet == null){
             return -1;
         }
@@ -157,6 +158,7 @@ public class putchunkStub implements MessageStub,Runnable {
     }
     
     private boolean validateMessage(Message message){
+        this.status = "VALIDATING MESSAGE";
         if(message==null){
             Logging.LogError("[ERROR]@putchunkStub:Run-Thread<" + this.thread.getId() + ">No Response Message Found");
             this.status="WAITING FOR MESSAGE";
@@ -176,6 +178,7 @@ public class putchunkStub implements MessageStub,Runnable {
     }
 
     public void  timeout(){
+        this.status="NETWORK TIME OUT";
         //did not receive a message
         this.counter = 0;
         this.sendPacket(this.packet);
@@ -183,6 +186,7 @@ public class putchunkStub implements MessageStub,Runnable {
 
     @Override
     public void run() {
+        int timeout = 0;
         this.sendMessage(this.message);
         while(true){
             Message inMsg=null;
@@ -195,10 +199,17 @@ public class putchunkStub implements MessageStub,Runnable {
 
             this.validateMessage(inMsg);
             if(inMsg==null){
+                if(timeout>3){
+                    Logging.FatalErrorLog("Thread Timeout Limit Reached Killing Putchunk Thread "+this.thread.getId());
+                    return;
+                }
+                timeout++;
                 this.timeout();
+                continue;
             }
 
             if(counter>=replicationDeg){
+                Logging.FatalSuccessLog("Desired Replication Degree Reached Killing Putchunk Thread "+this.thread.getId());
                 return;
             }
         }

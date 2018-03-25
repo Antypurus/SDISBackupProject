@@ -23,7 +23,7 @@ public class threadRegistry {
      * @param fileID
      */
     public void addThread(MessageStub stub,int chunkNo,String fileID){
-        System.out.println("Registering thread with <"+chunkNo+","+fileID+">");
+        Logging.Log("[LOG]@threadRegistry:addThread-Registering thread with <"+chunkNo+","+fileID+">");
         this.threadRegistry.put(new Pair<>(fileID,chunkNo),stub);
     }
 

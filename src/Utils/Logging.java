@@ -20,4 +20,16 @@ public class Logging {
         }
     }
 
+    public static void FatalErrorLog(String log){
+        if(Constants.LOG) {
+            System.out.println(Constants.ANSI_RED_BACKGROUND + log + Constants.ANSI_RESET);
+        }
+    }
+
+    public static void FatalSuccessLog(String log){
+        if(Constants.LOG) {
+            System.out.println(Constants.ANSI_GREEN_BACKGROUND + log + Constants.ANSI_RESET);
+        }
+    }
+
 }
