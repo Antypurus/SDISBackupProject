@@ -1,4 +1,4 @@
-package initiatorPeerSubprotocols;
+package Subprotocols;
 
 import MessageHandler.Message;
 import MessageStubs.MessageStub;

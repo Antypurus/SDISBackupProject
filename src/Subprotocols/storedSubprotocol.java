@@ -1,4 +1,4 @@
-package peerSubprotocols;
+package Subprotocols;
 
 public class storedSubprotocol {
 }

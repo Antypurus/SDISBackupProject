@@ -1,4 +1,4 @@
-package initiatorPeerSubprotocols;
+package Subprotocols;
 
 public class deleteSubprotocol {
 }

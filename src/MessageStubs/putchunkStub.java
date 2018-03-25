@@ -158,17 +158,18 @@ public class putchunkStub implements MessageStub,Runnable {
     private boolean validateMessage(Message message){
         this.status = "VALIDATING MESSAGE";
         if(message==null){
-            Logging.LogError("[ERROR]@putchunkStub:Run-Thread<" + this.thread.getId() + ">No Response Message Found");
+            Logging.LogError("[ERROR]@putchunkStub:validateMessage-Thread<" + this.thread.getId() + ">No Response Message Found");
             this.status="WAITING FOR MESSAGE";
             return false;
         }
         if(message!=null) {
             if (message.getMessageType() == messageType.STORED && message.getFileID().equals(this.fileId) &&message.getChunkNO() == this.chunkNo) {
                 this.counter++;
-                Logging.LogSuccess("[SUCCESS]@putchunkStub:Run-Thread<"+this.thread.getId()+">Response Message Validated Current Replication Degree is:"+this.counter);
+                Logging.LogSuccess("[SUCCESS]@putchunkStub:validateMessage-Thread<"+this.thread.getId()+">Response Message Validated Current Replication Degree is:"+this.counter);
                 return true;
             }else{
-                Logging.LogError("[ERROR]@putchunkStub:Run-Thread<"+this.thread.getId()+">Invalid Message Received,this is not the corrent response to PUTCHUNK command message");
+                Logging.LogError("[ERROR]@putchunkStub:validateMessage-Thread<"+this.thread.getId()+">Invalid Message Received,this is not the corrent response to PUTCHUNK command message");
+                Logging.LogError(message.toString());
                 return false;
             }
         }

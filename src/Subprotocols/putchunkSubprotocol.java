@@ -1,4 +1,4 @@
-package initiatorPeerSubprotocols;
+package Subprotocols;
 
 import FileHandler.FileIDCalculator;
 import FileHandler.FileStreamer;

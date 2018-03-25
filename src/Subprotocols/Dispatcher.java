@@ -1,4 +1,4 @@
-package initiatorPeerSubprotocols;
+package Subprotocols;
 
 import Utils.threadRegistry;
 
@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 
-public class initiatorPeerDispatcher implements Runnable{
+public class Dispatcher implements Runnable{
 
     private threadRegistry          registry = null;
     private MulticastSocket         socket = null;
 
-    public initiatorPeerDispatcher(MulticastSocket socket,threadRegistry registry){
+    public Dispatcher(MulticastSocket socket, threadRegistry registry){
         this.socket = socket;
         this.registry = registry;
     }
