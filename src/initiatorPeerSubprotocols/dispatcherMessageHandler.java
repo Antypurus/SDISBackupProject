@@ -1,6 +1,8 @@
 package initiatorPeerSubprotocols;
 
 import MessageHandler.Message;
+import MessageHandler.messageType;
+import MessageStubs.MessageStub;
 import Utils.threadRegistry;
 
 public class dispatcherMessageHandler implements Runnable{
@@ -15,10 +17,11 @@ public class dispatcherMessageHandler implements Runnable{
 
     @Override
     public void run() {
-        if(this.registry!=null && this.message!=null){
+        if(this.registry!=null && this.message!=null) {
             Message msg = Message.ParseMessage(this.message);
-            if(msg!=null) {
-                System.out.println("Dispatcher:"+msg.toString());
+            MessageStub stub = this.registry.getThread(msg.getChunkNO(), msg.getFileID());
+            if (stub != null) {
+                stub.addInboundMessage(msg);
             }
         }
     }
