@@ -46,7 +46,7 @@ public class putchunkSubprotocol {
 
         putchunkStub stub = new putchunkStub(this.socket,this.senderID,0,this.fileID,this.startChunk,10);
         stub.setAddressAndPort(this.address,this.port);
-        this.registry.addThread(stub,0,this.fileID);
+        this.registry.registerPutchunkThread(stub,0,this.fileID);
         Thread trd = new Thread(stub);
         stub.thread = trd;
         trd.start();
@@ -63,7 +63,7 @@ public class putchunkSubprotocol {
             ctr++;
             putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,10);
             stube.setAddressAndPort(this.address,this.port);
-            this.registry.addThread(stube,ctr,this.fileID);
+            this.registry.registerPutchunkThread(stube,ctr,this.fileID);
             Thread trdd = new Thread(stube);
             stube.thread = trdd;
             trdd.start();

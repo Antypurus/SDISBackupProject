@@ -24,7 +24,7 @@ public class PeerMain {
     putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket,InetAddress.getByName("224.0.1.1"),5151);
     /**
     while(true){
-        Iterator it = registry.threadRegistry.entrySet().iterator();
+        Iterator it = registry.putchunkThreadRegistry.entrySet().iterator();
         while (it.hasNext()) {
             ConcurrentHashMap.Entry pair = (ConcurrentHashMap.Entry)it.next();
             System.out.print(pair.getKey()+" ");
