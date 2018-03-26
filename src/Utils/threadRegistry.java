@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class threadRegistry {
 
     public ConcurrentHashMap<Pair<String,Integer>,MessageStub> putchunkThreadRegistry;
-    public ConcurrentHashMap<String,MessageStub> getchunkThreadRegistry;
+    public ConcurrentHashMap<Pair<String,Integer>,MessageStub> getchunkThreadRegistry;
 
     /**
      *
@@ -72,10 +72,11 @@ public class threadRegistry {
      * @param stub
      * @param fileId
      */
-    public void registerGetchunkThread(MessageStub stub,String fileId){
+    public void registerGetchunkThread(MessageStub stub,String fileId,int chunkNo){
         Logging.Log("[LOG]@putchunkThreadRegistry:registerPutchunkThread-Registering thread with <"+fileId+">");
-        if(!this.getchunkThreadRegistry.containsKey(fileId)){
-            this.getchunkThreadRegistry.put(fileId,stub);
+        Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
+        if(!this.getchunkThreadRegistry.containsKey(key)){
+            this.getchunkThreadRegistry.put(key,stub);
         }
     }
 
@@ -84,20 +85,22 @@ public class threadRegistry {
      * @param fileId
      * @return
      */
-    public MessageStub getGetchunkThread(String fileId){
-        if(!this.getchunkThreadRegistry.containsKey(fileId)){
+    public MessageStub getGetchunkThread(String fileId,int chunkNo){
+        Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
+        if(!this.getchunkThreadRegistry.containsKey(key)){
             return null;
         }
-        return this.getchunkThreadRegistry.get(fileId);
+        return this.getchunkThreadRegistry.get(key);
     }
 
     /**
      *
      * @param fileId
      */
-    public void removeGetchunkThread(String fileId){
-        if(this.getchunkThreadRegistry.containsKey(fileId)){
-            this.getchunkThreadRegistry.remove(fileId);
+    public void removeGetchunkThread(String fileId,int chunkNo){
+        Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
+        if(this.getchunkThreadRegistry.containsKey(key)){
+            this.getchunkThreadRegistry.remove(key);
         }
     }
 

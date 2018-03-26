@@ -113,7 +113,6 @@ public class getChunkMessageStub implements Runnable,MessageStub {
 
     @Override
     public void run() {
-
         int ret = this.sendMessage(this.msg);
         if(ret==-1){
             Logging.FatalErrorLog("[ERROR]@getChunkMessageStub-Run:Failed to send Getchunk Message Killing Thread");

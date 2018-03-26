@@ -41,8 +41,13 @@ public class dispatcherMessageHandler implements Runnable{
                     }
                     break;
                 }
-                case CHUNK:
+                case CHUNK: {
+                    MessageStub stub = this.registry.getGetchunkThread(msg.getFileID(),msg.getChunkNO());
+                    if (stub != null) {
+                        stub.addInboundMessage(msg);
+                    }
                     break;
+                }
                 case DELETE:
                     break;
                 case REMOVED:

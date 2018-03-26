@@ -1,5 +1,6 @@
 package Subprotocols;
 
+import MessageStubs.getChunkMessageStub;
 import Utils.threadRegistry;
 
 import java.net.InetAddress;
@@ -23,5 +24,10 @@ public class getChunkSubprotocol{
         this.fileId = fileId;
         this.chunkNo = chunkNo;
         this.registry = registry;
+
+        getChunkMessageStub stub = new getChunkMessageStub(this.socket,this.address,this.port,this.fileId,this.senderId,this.chunkNo);
+        Thread thread = new Thread(stub);
+        this.registry.registerGetchunkThread(stub,this.fileId,this.chunkNo);
+        thread.start();
     }
 }
