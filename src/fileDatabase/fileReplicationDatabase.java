@@ -14,6 +14,7 @@ public class fileReplicationDatabase implements Serializable{
     public static fileReplicationDatabase getDatabase(String filename){
         if(!fileReplicationDatabase.instantiated){
             fileReplicationDatabase.singleton = new fileReplicationDatabase(filename);
+            fileReplicationDatabase.instantiated = true;
         }
         return fileReplicationDatabase.singleton;
     }

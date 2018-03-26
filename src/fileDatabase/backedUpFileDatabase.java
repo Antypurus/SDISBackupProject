@@ -14,6 +14,7 @@ public class backedUpFileDatabase implements Serializable{
     public static backedUpFileDatabase getDatabase(String file){
         if(!backedUpFileDatabase.instantiated){
             backedUpFileDatabase.singleton = new backedUpFileDatabase(file);
+            backedUpFileDatabase.instantiated = true;
         }
         return backedUpFileDatabase.singleton;
     }
