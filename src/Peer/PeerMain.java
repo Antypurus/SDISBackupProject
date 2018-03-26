@@ -15,6 +15,7 @@ import java.sql.*;
 
 public class PeerMain {
   public static void main(String args[]) throws IOException, InterruptedException {
+      /**
       Connection c = null;
 
       try {
@@ -25,7 +26,8 @@ public class PeerMain {
           System.exit(-5);
       }
       System.out.println(Constants.ANSI_CYAN+"Opened database successfully"+Constants.ANSI_RESET);
-    /**
+       **/
+
     threadRegistry registry = new threadRegistry();
     MulticastSocket socket = new MulticastSocket(5151);
     socket.joinGroup(InetAddress.getByName("224.0.1.1"));
@@ -35,6 +37,6 @@ public class PeerMain {
     thread.start();
 
     putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket,InetAddress.getByName("224.0.1.1"),5151);
-     **/
+
   }
 }

@@ -186,6 +186,8 @@ public class putchunkStub implements MessageStub,Runnable {
 
     @Override
     public void run() {
+        //add entry to the db for the chunk
+
         int timeout = 0;
         this.sendMessage(this.message);
         while(true){
@@ -201,10 +203,12 @@ public class putchunkStub implements MessageStub,Runnable {
             if(inMsg==null){
                 if(counter>=replicationDeg){
                     Logging.FatalSuccessLog("Desired Replication Degree Reached Killing Putchunk Thread "+this.thread.getId());
+                    //update db entry
                     return;
                 }else {
                     if (timeout >= 5) {
                         Logging.FatalErrorLog("Thread Timeout Limit Reached Killing Putchunk Thread " + this.thread.getId());
+                        //update db entry
                         return;
                     }
                     timeout++;
