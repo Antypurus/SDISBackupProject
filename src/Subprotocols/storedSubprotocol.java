@@ -2,6 +2,8 @@ package Subprotocols;
 
 import MessageHandler.Message;
 import MessageHandler.storedMessage;
+import fileDatabase.fileBackUpData;
+import fileDatabase.fileBackUpDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -30,8 +32,12 @@ public class storedSubprotocol implements Runnable{
 
     @Override
     public void run() {
-        //add db entry
-        //check if already backed up
+
+        fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDataDatabase.db");
+        if(db.getRegisteredFileBackupData(this.msg.getFileID())!=null){
+            return;
+        }
+
         if(this.msg.getSenderID()!=this.senderId){
             boolean stored = false;
             try {
@@ -40,6 +46,10 @@ public class storedSubprotocol implements Runnable{
                 file.write(content);
                 file.close();
                 stored = true;
+
+                db.registerFileBackUpData(this.msg.getFileID(),new fileBackUpData(this.msg.getFileID(),this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getChunkNO()));
+                db.save();
+                
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

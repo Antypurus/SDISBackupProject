@@ -5,6 +5,8 @@ import FileHandler.FileStreamer;
 import MessageStubs.putchunkStub;
 import Utils.Constants;
 import Utils.threadRegistry;
+import fileDatabase.backedUpFileData;
+import fileDatabase.backedUpFileDatabase;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -72,6 +74,10 @@ public class putchunkSubprotocol {
             stube.thread = trdd;
             trdd.start();
         }
+
+        backedUpFileDatabase db = backedUpFileDatabase.getDatabase("backedUpFileDatabase.db");
+        db.registerBackeUpFile(fileID,new backedUpFileData(fileID,filepath,fileID,ctr+1));
+        db.save();
     }
 
 }
