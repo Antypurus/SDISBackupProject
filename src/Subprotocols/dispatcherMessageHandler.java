@@ -65,7 +65,8 @@ public class dispatcherMessageHandler implements Runnable{
                         break;
                     }
                     case DELETE:
-                        break;
+                        deleteSubprotocol del = new deleteSubprotocol(msg,this.socket,this.address,this.port,this.senderId);
+                        del.run();
                     case REMOVED:
                         break;
                     case GETCHUNK:
