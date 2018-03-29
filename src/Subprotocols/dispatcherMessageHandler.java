@@ -70,6 +70,8 @@ public class dispatcherMessageHandler implements Runnable{
                     case REMOVED:
                         break;
                     case GETCHUNK:
+                        chunkSubprotocol chunk = new chunkSubprotocol(msg,this.socket,this.address,this.port,this.senderId);
+                        chunk.run();
                         break;
                 }
             }
