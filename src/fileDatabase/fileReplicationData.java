@@ -7,6 +7,7 @@ public class fileReplicationData implements Serializable{
 
     private int intendedReplicationDegree = 0;
     private ArrayList<Integer>peersWhoStored;
+    public ArrayList<Integer>storedChunks;
     private int actualReplicationDegree = 0;
     private String fileId;
     private int chunkNo;

@@ -3,6 +3,8 @@ package Subprotocols;
 import MessageHandler.Message;
 import fileDatabase.fileBackUpData;
 import fileDatabase.fileBackUpDatabase;
+import fileDatabase.fileReplicationData;
+import fileDatabase.fileReplicationDatabase;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -27,28 +29,37 @@ public class deleteSubprotocol {
     }
 
     public void run(){
-        fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDatabase.db");
-        fileBackUpData data = null;
+        fileReplicationDatabase db = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
+        fileReplicationData data =  db.getRegisteredFileReplicationData(this.message.getFileID());
+
+        fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDatabase.db");
+        fileBackUpData datab = null;
         int ctr = 1;
-        data = db.getRegisteredFileBackupData(this.message.getFileID()+ctr);
-        while(data!=null){
+        for(int i=0;i<data.storedChunks.size();++i){
+
+            datab = dba.getRegisteredFileBackupData((this.message.getFileID()+data.storedChunks.get(i)));
             try {
-                Files.delete(Paths.get(data.getFilepath()));
+                Files.delete(Paths.get(datab.getFilepath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            db.unregisterFileBackUpData(this.message.getFileID()+ctr);
+            dba.unregisterFileBackUpData(this.message.getFileID()+ctr);
 
             try {
-                db.save();
+                dba.save();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            ctr++;
-            data = db.getRegisteredFileBackupData(this.message.getFileID()+ctr);
+            data.storedChunks.remove(i);
+        }
+
+        db.unregisterFileReplicationData(this.message.getFileID());
+        try {
+            db.save();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
 
 }

@@ -4,6 +4,7 @@ import MessageHandler.Message;
 import MessageHandler.storedMessage;
 import fileDatabase.fileBackUpData;
 import fileDatabase.fileBackUpDatabase;
+import fileDatabase.fileReplicationDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -35,6 +36,13 @@ public class storedSubprotocol implements Runnable{
 
         fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDataDatabase.db");
         if(db.getRegisteredFileBackupData(this.msg.getFileID())!=null){
+            byte[] send = this.outMsg.toString().getBytes();
+            DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
+            try {
+                this.socket.send(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -57,6 +65,15 @@ public class storedSubprotocol implements Runnable{
             }
 
             if(stored){
+
+                fileReplicationDatabase dba = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
+                dba.getRegisteredFileReplicationData(this.msg.getFileID()).storedChunks.add(this.msg.getChunkNO());
+                try {
+                    dba.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 byte[] send = this.outMsg.toString().getBytes();
                 DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
                 try {
