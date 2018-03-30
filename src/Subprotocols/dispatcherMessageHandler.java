@@ -22,9 +22,13 @@ public class dispatcherMessageHandler implements Runnable{
     private int                 port;
     private int                 senderId;
 
-    public dispatcherMessageHandler(String message, threadRegistry registry){
+    public dispatcherMessageHandler(String message, threadRegistry registry,MulticastSocket socket,InetAddress address,int port,int senderId){
         this.registry = registry;
         this.message = message;
+        this.senderId = senderId;
+        this.socket = socket;
+        this.address = address;
+        this.port = port;
     }
 
     @Override

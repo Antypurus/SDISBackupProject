@@ -10,6 +10,7 @@ import fileDatabase.backedUpFileDatabase;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Scanner;
 
 public class PeerMain {
   public static void main(String args[]) throws IOException, InterruptedException {
@@ -17,11 +18,20 @@ public class PeerMain {
     MulticastSocket socket = new MulticastSocket(5151);
     socket.joinGroup(InetAddress.getByName("224.0.1.1"));
 
-    Dispatcher dispatcher = new Dispatcher(socket,registry);
+      int senderId = 0;
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("SenderID:");
+      senderId = scanner.nextInt();
+
+      System.out.print("send:");
+      String s = scanner.nextLine();
+
+    Dispatcher dispatcher = new Dispatcher(socket,registry,InetAddress.getByName("224.0.1.1"),5151,senderId);
     Thread thread = new Thread(dispatcher);
     thread.start();
 
-    putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt",registry,socket,InetAddress.getByName("224.0.1.1"),5151);
-
+    if(s.equals("s")) {
+        putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt", registry, socket, InetAddress.getByName("224.0.1.1"), 5151);
+    }
   }
 }
