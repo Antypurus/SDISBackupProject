@@ -22,7 +22,7 @@ public class storedMessage extends Message{
     @Override
     public String toString() {
         String ret = this.messageType.name()+" "+this.protocolVersion+" ";
-        ret+=this.senderID+" "+this.FileID+" "+this.chunkNO+" \r\n \r\n";
-        return ret.trim();
+        ret+=this.senderID+" "+this.FileID+" "+this.chunkNO+"\r\n"+" \r\n";
+        return ret;
     }
 }
