@@ -24,7 +24,7 @@ public class PeerMain {
       senderId = scanner.nextInt();
 
       System.out.print("send:");
-      String s = scanner.nextLine();
+      String s = scanner.next();
 
     Dispatcher dispatcher = new Dispatcher(socket,registry,InetAddress.getByName("224.0.1.1"),5151,senderId);
     Thread thread = new Thread(dispatcher);

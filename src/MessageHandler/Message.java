@@ -202,37 +202,37 @@ public abstract class Message {
                return ret;
            }
            case STORED: {
-               int senderID = Integer.parseInt(headerArgs[0]);
-               String fileID = headerArgs[1];
-               int chunkNo = Integer.parseInt(headerArgs[2]);
+               int senderID = Integer.parseInt(headerArgs[2]);
+               String fileID = headerArgs[3];
+               int chunkNo = Integer.parseInt(headerArgs[4]);
                return new storedMessage(senderID,fileID,chunkNo);
            }
            case CHUNK: {
                if(body==null){
                    return null;
                }
-               int senderID = Integer.parseInt(headerArgs[0]);
-               String fileID = headerArgs[1];
-               int chunkNo = Integer.parseInt(headerArgs[2]);
+               int senderID = Integer.parseInt(headerArgs[2]);
+               String fileID = headerArgs[3];
+               int chunkNo = Integer.parseInt(headerArgs[4]);
                chunkMessage ret = new chunkMessage(senderID, chunkNo, fileID);
                ret.setBody(body);
                return ret;
            }
            case DELETE: {
-               int senderID = Integer.parseInt(headerArgs[0]);
-               String fileID = headerArgs[1];
+               int senderID = Integer.parseInt(headerArgs[2]);
+               String fileID = headerArgs[3];
                return new deleteMessage(senderID,fileID);
            }
            case REMOVED: {
-               int senderID = Integer.parseInt(headerArgs[0]);
-               String fileID = headerArgs[1];
-               int chunkNo = Integer.parseInt(headerArgs[2]);
+               int senderID = Integer.parseInt(headerArgs[2]);
+               String fileID = headerArgs[3];
+               int chunkNo = Integer.parseInt(headerArgs[4]);
                return new removedMessage(senderID,fileID,chunkNo);
            }
            case GETCHUNK: {
-               int senderID = Integer.parseInt(headerArgs[0]);
-               String fileID = headerArgs[1];
-               int chunkNo = Integer.parseInt(headerArgs[2]);
+               int senderID = Integer.parseInt(headerArgs[2]);
+               String fileID = headerArgs[3];
+               int chunkNo = Integer.parseInt(headerArgs[4]);
                return new getChunkMessage(senderID,fileID,chunkNo);
            }
            default:{
