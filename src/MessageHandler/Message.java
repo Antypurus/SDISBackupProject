@@ -1,6 +1,7 @@
 package MessageHandler;
 
 import FileHandler.FileIDCalculator;
+import Utils.Logging;
 
 import java.io.IOException;
 
@@ -191,6 +192,9 @@ public abstract class Message {
            case PUTCHUNK: {
                if(body==null){
                    return null;
+               }
+               if(body.length()==0){
+                   Logging.FatalErrorLog("Empty Body");
                }
                int senderID = Integer.parseInt(headerArgs[2]);
                String fileID = headerArgs[3];

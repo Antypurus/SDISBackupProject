@@ -2,6 +2,7 @@ package Subprotocols;
 
 import MessageHandler.Message;
 import MessageHandler.storedMessage;
+import Utils.Logging;
 import fileDatabase.fileBackUpData;
 import fileDatabase.fileBackUpDatabase;
 import fileDatabase.fileReplicationDatabase;
@@ -54,6 +55,8 @@ public class storedSubprotocol implements Runnable{
                 file.write(content);
                 file.close();
                 stored = true;
+
+                Logging.LogSuccess("Saved Chunk "+this.msg.getChunkNO());
 
                 db.registerFileBackUpData(this.msg.getFileID(),new fileBackUpData(this.msg.getFileID(),"stored/"+this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getChunkNO()));
                 db.save();

@@ -20,7 +20,7 @@ public class fileReplicationData implements Serializable{
         this.chunkNo = chunkNo;
     }
 
-    public void addPeerWhoStored(int senderId){
+    public synchronized void addPeerWhoStored(int senderId){
         if(!this.peersWhoStored.contains(senderId)){
             this.peersWhoStored.add(senderId);
         }
@@ -30,7 +30,7 @@ public class fileReplicationData implements Serializable{
         return this.peersWhoStored.contains(senderId);
     }
 
-    public void removePeerWhoStored(int senderId){
+    public synchronized void removePeerWhoStored(int senderId){
         if(this.peersWhoStored.contains(senderId)){
             this.peersWhoStored.remove(senderId);
         }

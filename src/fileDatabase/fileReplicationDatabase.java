@@ -6,18 +6,23 @@ import java.util.concurrent.ConcurrentHashMap;
 public class fileReplicationDatabase implements Serializable{
 
     private static boolean instantiated = false;
-    private static fileReplicationDatabase singleton = null;
+    private  static fileReplicationDatabase singleton = null;
 
     private String databaseFilepath;
     private ConcurrentHashMap<String,fileReplicationData>database = new ConcurrentHashMap<>();
 
-    public synchronized static fileReplicationDatabase getDatabase(String filename){
+    public static fileReplicationDatabase getDatabase(String filename){
         if(!fileReplicationDatabase.instantiated){
-            fileReplicationDatabase.singleton = new fileReplicationDatabase(filename);
-            fileReplicationDatabase.instantiated = true;
+            initer(filename);
         }
         return fileReplicationDatabase.singleton;
     }
+
+    private static synchronized void initer(String filename){
+        fileReplicationDatabase.singleton = new fileReplicationDatabase(filename);
+        fileReplicationDatabase.instantiated = true;
+    }
+
 
     private fileReplicationDatabase(String filename){
         this.databaseFilepath = filename;
