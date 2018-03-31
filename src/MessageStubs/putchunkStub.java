@@ -206,7 +206,7 @@ public class putchunkStub implements MessageStub,Runnable {
                     return;
                 }else {
                     if (timeout >= 5) {
-                        Logging.FatalErrorLog("Thread Timeout Limit Reached Killing Putchunk Thread " + this.thread.getId());
+                        Logging.FatalErrorLog("Thread Timeout Limit Reached Killing Putchunk Thread " + this.thread.getId() +" Was Handling Chunk:"+this.chunkNo);
                         Constants.registry.removePutchunkThread(this.fileId,this.chunkNo);
                         return;
                     }
