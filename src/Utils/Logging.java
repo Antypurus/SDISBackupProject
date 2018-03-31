@@ -32,4 +32,10 @@ public class Logging {
         }
     }
 
+    public static void MessageSentLog(String log){
+        if(Constants.FATAL_LOG) {
+            System.out.println(Constants.ANSI_CYAN_BACKGROUND + log + Constants.ANSI_RESET);
+        }
+    }
+
 }

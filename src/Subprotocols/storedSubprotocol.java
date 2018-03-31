@@ -33,9 +33,9 @@ public class storedSubprotocol implements Runnable{
     @Override
     public void run() {
         if(this.msg.getSenderID()!=this.senderId){
-
             fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase();
             if(db.getRegisteredFileBackupData(this.msg.getFileID(),this.msg.getChunkNO())!=null){
+                Logging.FatalSuccessLog("File Already Stored Sending Stored Message");
                 byte[] send = this.outMsg.toString().getBytes();
                 DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
                 try {
@@ -43,6 +43,7 @@ public class storedSubprotocol implements Runnable{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Logging.MessageSentLog("Stored Message Sent");
                 return;
             }
 

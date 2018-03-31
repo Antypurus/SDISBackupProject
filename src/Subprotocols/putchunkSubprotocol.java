@@ -27,6 +27,7 @@ public class putchunkSubprotocol {
     private threadRegistry  registry;
     private InetAddress     address;
     private int             port;
+    private int             repDeg;
 
     /**
      *
@@ -36,13 +37,14 @@ public class putchunkSubprotocol {
      * @param socket
      * @throws IOException
      */
-    public putchunkSubprotocol(int senderID, String filepath, threadRegistry registry, MulticastSocket socket, InetAddress addr,int port) throws IOException {
+    public putchunkSubprotocol(int senderID, String filepath, threadRegistry registry, MulticastSocket socket, InetAddress addr,int port,int intendedReplicationDeg) throws IOException {
         this.filepath   = filepath;
         this.senderID   = senderID;
         this.registry   = registry;
         this.socket     = socket;
         this.address    = addr;
         this.port       = port;
+        this.repDeg     = intendedReplicationDeg;
 
         FileStreamer stream = new FileStreamer(this.CHUNK_BODY_SIZE,filepath);
         this.startChunk = stream.read();
@@ -50,7 +52,7 @@ public class putchunkSubprotocol {
         FileIDCalculator cal = new FileIDCalculator(this.startChunk,filepath,senderID);
         this.fileID = cal.calculateFileID();
 
-        putchunkStub stub = new putchunkStub(this.socket,this.senderID,0,this.fileID,this.startChunk,1);
+        putchunkStub stub = new putchunkStub(this.socket,this.senderID,0,this.fileID,this.startChunk,this.repDeg);
         stub.setAddressAndPort(this.address,this.port);
         this.registry.registerPutchunkThread(stub,0,this.fileID);
         Thread trd = new Thread(stub);
@@ -67,7 +69,7 @@ public class putchunkSubprotocol {
                 break;
             }
             ctr++;
-            putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,1);
+            putchunkStub stube = new putchunkStub(this.socket,this.senderID,ctr,this.fileID,read,this.repDeg);
             stube.setAddressAndPort(this.address,this.port);
             this.registry.registerPutchunkThread(stube,ctr,this.fileID);
             Thread trdd = new Thread(stube);

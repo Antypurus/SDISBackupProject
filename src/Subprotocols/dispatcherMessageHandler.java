@@ -49,8 +49,11 @@ public class dispatcherMessageHandler implements Runnable{
                         }
 
                         fileReplicationDatabase db = fileReplicationDatabase.getDatabase();
-                        db.registerFileReplicationData(new fileReplicationData(100, msg.getFileID(), msg.getChunkNO()));
                         fileReplicationData data = db.getRegisteredFileReplicationData(msg.getFileID(),msg.getChunkNO());
+                        if(data==null) {
+                            db.registerFileReplicationData(new fileReplicationData(msg.getReplicationDeg(), msg.getFileID(), msg.getChunkNO()));
+                            data = db.getRegisteredFileReplicationData(msg.getFileID(), msg.getChunkNO());
+                        }
                         data.addPeerWhoStored(msg.getSenderID());
 
                         try {

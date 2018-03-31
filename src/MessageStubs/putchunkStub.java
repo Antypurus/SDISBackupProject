@@ -3,6 +3,7 @@ package MessageStubs;
 import MessageHandler.Message;
 import MessageHandler.messageType;
 import MessageHandler.putchunkMessage;
+import Utils.Constants;
 import Utils.Logging;
 
 import java.io.IOException;
@@ -187,13 +188,10 @@ public class putchunkStub implements MessageStub,Runnable {
 
     @Override
     public void run() {
-        //add entry to the db for the chunk
-
         int timeout = 0;
         this.sendMessage(this.message);
         while(true){
             Message inMsg=null;
-
             try {
                 inMsg = this.getInboundMessage();
             } catch (InterruptedException e){
@@ -204,12 +202,12 @@ public class putchunkStub implements MessageStub,Runnable {
             if(inMsg==null){
                 if(counter>=replicationDeg){
                     Logging.FatalSuccessLog("Desired Replication Degree Reached Killing Putchunk Thread "+this.thread.getId());
-                    //update db entry
+                    Constants.registry.removePutchunkThread(this.fileId,this.chunkNo);
                     return;
                 }else {
                     if (timeout >= 5) {
                         Logging.FatalErrorLog("Thread Timeout Limit Reached Killing Putchunk Thread " + this.thread.getId());
-                        //update db entry
+                        Constants.registry.removePutchunkThread(this.fileId,this.chunkNo);
                         return;
                     }
                     timeout++;
@@ -218,13 +216,6 @@ public class putchunkStub implements MessageStub,Runnable {
                     continue;
                 }
             }
-
-            /**
-            if(counter>=replicationDeg){
-                Logging.FatalSuccessLog("Desired Replication Degree Reached Killing Putchunk Thread "+this.thread.getId());
-                return;
-            }
-             **/
         }
     }
 }
