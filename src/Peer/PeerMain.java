@@ -3,6 +3,9 @@ package Peer;
 import Utils.threadRegistry;
 import Subprotocols.Dispatcher;
 import Subprotocols.putchunkSubprotocol;
+import fileDatabase.backedUpFileDatabase;
+import fileDatabase.fileBackUpDatabase;
+import fileDatabase.fileReplicationDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +15,12 @@ import java.util.Scanner;
 
 public class PeerMain {
   public static void main(String args[]) throws IOException, InterruptedException {
+      fileReplicationDatabase dba = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
+      fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDataDatabase.db");
+      backedUpFileDatabase dbs = backedUpFileDatabase.getDatabase("backedUpFileDatabase.db");
+        dba.save();
+        db.save();
+        dbs.save();
 
       File dir = new File("stored");
       dir.mkdir();

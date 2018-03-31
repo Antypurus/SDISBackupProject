@@ -36,7 +36,7 @@ public class storedSubprotocol implements Runnable{
     public void run() {
 
         fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDataDatabase.db");
-        if(db.getRegisteredFileBackupData(this.msg.getFileID())!=null){
+        if(db.getRegisteredFileBackupData(this.msg.getFileID(),this.msg.getChunkNO())!=null){
             byte[] send = this.outMsg.toString().getBytes();
             DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
             try {
@@ -58,7 +58,7 @@ public class storedSubprotocol implements Runnable{
 
                 Logging.LogSuccess("Saved Chunk "+this.msg.getChunkNO());
 
-                db.registerFileBackUpData(this.msg.getFileID(),new fileBackUpData(this.msg.getFileID(),"stored/"+this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getChunkNO()));
+                db.registerFileBackUpData(new fileBackUpData(this.msg.getFileID(),"stored/"+this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getChunkNO()));
                 db.save();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -68,7 +68,7 @@ public class storedSubprotocol implements Runnable{
 
             if(stored){
                 fileReplicationDatabase dba = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
-                dba.getRegisteredFileReplicationData(this.msg.getFileID()).storedChunks.add(this.msg.getChunkNO());
+                dba.getRegisteredFileReplicationData(this.msg.getFileID(),this.msg.getChunkNO()).storedChunks.add(this.msg.getChunkNO());
                 try {
                     dba.save();
                 } catch (IOException e) {

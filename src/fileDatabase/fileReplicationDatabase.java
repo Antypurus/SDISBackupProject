@@ -1,5 +1,7 @@
 package fileDatabase;
 
+import javafx.util.Pair;
+
 import java.io.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,7 +11,7 @@ public class fileReplicationDatabase implements Serializable{
     private  static fileReplicationDatabase singleton = null;
 
     private String databaseFilepath;
-    private ConcurrentHashMap<String,fileReplicationData>database = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Pair<String,Integer>,fileReplicationData>database = new ConcurrentHashMap<>();
 
     public static fileReplicationDatabase getDatabase(String filename){
         if(!fileReplicationDatabase.instantiated){
@@ -49,26 +51,29 @@ public class fileReplicationDatabase implements Serializable{
         this.databaseFilepath = databaseFilepath;
     }
 
-    public void registerFileReplicationData(String filename,fileReplicationData data){
-        if(!this.database.containsKey(filename)){
-            this.database.put(filename,data);
+    public void registerFileReplicationData(fileReplicationData data){
+        Pair<String,Integer>key = new Pair<>(data.getFileId(),data.getChunkNo());
+        if(!this.database.containsKey(key)){
+            this.database.put(key,data);
         }
     }
 
-    public void unregisterFileReplicationData(String filename){
-        if(this.database.containsKey(filename)){
-            this.database.remove(filename);
+    public void unregisterFileReplicationData(String fileId,int chunkNo){
+        Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
+        if(this.database.containsKey(key)){
+            this.database.remove(key);
         }
     }
 
-    public fileReplicationData getRegisteredFileReplicationData(String filename){
-        if(this.database.containsKey(filename)){
-            return this.database.get(filename);
+    public fileReplicationData getRegisteredFileReplicationData(String fileId,int chunkNo){
+        Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
+        if(this.database.containsKey(key)){
+            return this.database.get(key);
         }
         return null;
     }
 
-    public synchronized void save() throws IOException {
+    public void save() throws IOException {
         FileOutputStream file = new FileOutputStream(this.databaseFilepath);
         ObjectOutputStream stream = new ObjectOutputStream(file);
         stream.writeObject(this);
@@ -76,7 +81,7 @@ public class fileReplicationDatabase implements Serializable{
         file.close();
     }
 
-    public synchronized void read() throws IOException, ClassNotFoundException {
+    public void read() throws IOException, ClassNotFoundException {
         FileInputStream file = new FileInputStream(this.databaseFilepath);
         ObjectInputStream stream = new ObjectInputStream(file);
         fileReplicationDatabase db = (fileReplicationDatabase) stream.readObject();

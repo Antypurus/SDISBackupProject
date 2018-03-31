@@ -30,31 +30,28 @@ public class deleteSubprotocol {
 
     public void run(){
         fileReplicationDatabase db = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
-        fileReplicationData data =  db.getRegisteredFileReplicationData(this.message.getFileID());
+        fileReplicationData data =  db.getRegisteredFileReplicationData(this.message.getFileID(),this.message.getChunkNO());
 
         fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDatabase.db");
         fileBackUpData datab = null;
-        int ctr = 1;
         for(int i=0;i<data.storedChunks.size();++i){
-
-            datab = dba.getRegisteredFileBackupData((this.message.getFileID()+data.storedChunks.get(i)));
+            datab = dba.getRegisteredFileBackupData(this.message.getFileID(),data.storedChunks.get(i));
             try {
                 Files.delete(Paths.get(datab.getFilepath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            dba.unregisterFileBackUpData(this.message.getFileID()+ctr);
+            dba.unregisterFileBackUpData(this.message.getFileID(),data.storedChunks.get(i));
 
             try {
                 dba.save();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            data.storedChunks.remove(i);
         }
+        data.storedChunks.clear();
 
-        db.unregisterFileReplicationData(this.message.getFileID());
+        db.unregisterFileReplicationData(this.message.getFileID(),this.message.getChunkNO());
         try {
             db.save();
         } catch (IOException e) {

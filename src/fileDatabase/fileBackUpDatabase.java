@@ -1,5 +1,7 @@
 package fileDatabase;
 
+import javafx.util.Pair;
+
 import java.io.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,7 +10,7 @@ public class fileBackUpDatabase implements Serializable{
     private static boolean instantiated = false;
     private static fileBackUpDatabase singleton = null;
 
-    private ConcurrentHashMap<String,fileBackUpData>database = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Pair<String,Integer>,fileBackUpData>database = new ConcurrentHashMap<>();
     private String databaseFilepath;
 
     public static fileBackUpDatabase getFileBackupDatabase(String filename){
@@ -34,21 +36,24 @@ public class fileBackUpDatabase implements Serializable{
         }
     }
 
-    public void registerFileBackUpData(String filename,fileBackUpData data){
-        if(!this.database.containsKey(filename)){
-            this.database.put(filename,data);
+    public void registerFileBackUpData(fileBackUpData data){
+        Pair<String,Integer>key = new Pair<>(data.getFileId(),data.getChunkNo());
+        if(!this.database.containsKey(key)){
+            this.database.put(key,data);
         }
     }
 
-    public void unregisterFileBackUpData(String filename){
-        if(this.database.containsKey(filename)){
-            this.database.remove(filename);
+    public void unregisterFileBackUpData(String fileId,int chunkNo){
+        Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
+        if(this.database.containsKey(key)){
+            this.database.remove(key);
         }
     }
 
-    public fileBackUpData getRegisteredFileBackupData(String filename){
-        if(this.database.containsKey(filename)){
-            return this.database.get(filename);
+    public fileBackUpData getRegisteredFileBackupData(String fileId,int chunkNo){
+        Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
+        if(this.database.containsKey(key)){
+            return this.database.get(key);
         }
         return null;
     }
