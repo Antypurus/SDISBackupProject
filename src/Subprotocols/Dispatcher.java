@@ -1,6 +1,7 @@
 package Subprotocols;
 
 import Utils.threadRegistry;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -9,11 +10,11 @@ import java.net.MulticastSocket;
 
 public class Dispatcher implements Runnable{
 
-    private threadRegistry          registry = null;
-    private MulticastSocket         socket = null;
-    private InetAddress             address = null;
-    private int                     port;
-    private int                     senderId;
+    private threadRegistry              registry = null;
+    private MulticastSocket             socket = null;
+    private InetAddress                 address = null;
+    private int                         port;
+    private int                         senderId;
 
     public Dispatcher(MulticastSocket socket, threadRegistry registry, InetAddress address,int port,int senderId){
         this.socket = socket;
@@ -41,6 +42,7 @@ public class Dispatcher implements Runnable{
                     e.printStackTrace();
                 }
             }
+            System.out.println("Number of Registered Putchun Threads: "+registry.getRegisteredPutchunkThreadCount());
         }
     }
 }

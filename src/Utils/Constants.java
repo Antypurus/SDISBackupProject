@@ -4,6 +4,9 @@ public class Constants {
 
     //for ease of access
     public static threadRegistry registry = null;
+    public static Channel MC = null;
+    public static Channel MDB = null;
+    public static Channel MDR = null;
 
     //Logging configuration values
     public static final boolean LOG = true;

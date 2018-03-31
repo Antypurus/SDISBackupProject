@@ -3,6 +3,7 @@ package Subprotocols;
 import MessageHandler.Message;
 import MessageHandler.messageType;
 import MessageStubs.MessageStub;
+import Utils.Constants;
 import Utils.threadRegistry;
 import fileDatabase.fileReplicationData;
 import fileDatabase.fileReplicationDatabase;
@@ -38,7 +39,7 @@ public class dispatcherMessageHandler implements Runnable{
             if(msg.getSenderID()!=this.senderId) {
                 switch (msg.getMessageType()) {
                     case PUTCHUNK: {
-                        storedSubprotocol stored = new storedSubprotocol(msg, this.socket, this.address, this.port, this.senderId);
+                        storedSubprotocol stored = new storedSubprotocol(msg, Constants.MC.socket, Constants.MC.address, Constants.MC.port, this.senderId);
                         stored.run();
                         break;
                     }
@@ -75,11 +76,11 @@ public class dispatcherMessageHandler implements Runnable{
                         deleteSubprotocol del = new deleteSubprotocol(msg,this.socket,this.address,this.port,this.senderId);
                         del.run();
                     case REMOVED:
-                        removedSubprotocol rem = new removedSubprotocol(msg,this.socket,this.address,this.port,this.senderId,this.registry);
+                        removedSubprotocol rem = new removedSubprotocol(msg,Constants.MDB.socket,Constants.MDB.address,Constants.MDB.port,this.senderId,this.registry);
                         rem.run();
                         break;
                     case GETCHUNK:
-                        chunkSubprotocol chunk = new chunkSubprotocol(msg,this.socket,this.address,this.port,this.senderId);
+                        chunkSubprotocol chunk = new chunkSubprotocol(msg,Constants.MDR.socket,Constants.MDR.address,Constants.MDR.port,this.senderId);
                         chunk.run();
                         break;
                 }
