@@ -63,7 +63,7 @@ public class fileReplicationDatabase implements Serializable{
         return null;
     }
 
-    public void save() throws IOException {
+    public synchronized void save() throws IOException {
         FileOutputStream file = new FileOutputStream(this.databaseFilepath);
         ObjectOutputStream stream = new ObjectOutputStream(file);
         stream.writeObject(this);
@@ -71,7 +71,7 @@ public class fileReplicationDatabase implements Serializable{
         file.close();
     }
 
-    public void read() throws IOException, ClassNotFoundException {
+    public synchronized void read() throws IOException, ClassNotFoundException {
         FileInputStream file = new FileInputStream(this.databaseFilepath);
         ObjectInputStream stream = new ObjectInputStream(file);
         fileReplicationDatabase db = (fileReplicationDatabase) stream.readObject();

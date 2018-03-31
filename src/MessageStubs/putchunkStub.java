@@ -57,6 +57,7 @@ public class putchunkStub implements MessageStub,Runnable {
         if(this.incomingQueue != null) {
                 this.incomingQueue.add(message);
                 this.notify();
+                this.timeoutPeriod = 1000;
         }
     }
 

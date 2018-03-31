@@ -1,12 +1,10 @@
 package Peer;
 
-import Utils.Constants;
 import Utils.threadRegistry;
 import Subprotocols.Dispatcher;
 import Subprotocols.putchunkSubprotocol;
-import fileDatabase.backedUpFileData;
-import fileDatabase.backedUpFileDatabase;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -14,6 +12,12 @@ import java.util.Scanner;
 
 public class PeerMain {
   public static void main(String args[]) throws IOException, InterruptedException {
+
+      File dir = new File("stored");
+      dir.mkdir();
+      dir = new File("restored");
+      dir.mkdir();
+
     threadRegistry registry = new threadRegistry();
     MulticastSocket socket = new MulticastSocket(5151);
     socket.joinGroup(InetAddress.getByName("224.0.1.1"));

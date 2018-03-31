@@ -49,15 +49,14 @@ public class storedSubprotocol implements Runnable{
         if(this.msg.getSenderID()!=this.senderId){
             boolean stored = false;
             try {
-                FileOutputStream file = new FileOutputStream(this.msg.getFileID()+this.msg.getChunkNO());
+                FileOutputStream file = new FileOutputStream("stored/"+this.msg.getFileID()+this.msg.getChunkNO());
                 byte[] content = this.msg.getBody().getBytes();
                 file.write(content);
                 file.close();
                 stored = true;
 
-                db.registerFileBackUpData(this.msg.getFileID(),new fileBackUpData(this.msg.getFileID(),this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getChunkNO()));
+                db.registerFileBackUpData(this.msg.getFileID(),new fileBackUpData(this.msg.getFileID(),"stored/"+this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getChunkNO()));
                 db.save();
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -65,7 +64,6 @@ public class storedSubprotocol implements Runnable{
             }
 
             if(stored){
-
                 fileReplicationDatabase dba = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
                 dba.getRegisteredFileReplicationData(this.msg.getFileID()).storedChunks.add(this.msg.getChunkNO());
                 try {

@@ -1,6 +1,8 @@
 package fileDatabase;
 
-public class fileBackUpData {
+import java.io.Serializable;
+
+public class fileBackUpData implements Serializable{
 
     private String fileId;
     private int chunkNo;
