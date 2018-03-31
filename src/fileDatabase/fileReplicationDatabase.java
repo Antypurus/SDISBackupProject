@@ -11,7 +11,7 @@ public class fileReplicationDatabase implements Serializable{
     private String databaseFilepath;
     private ConcurrentHashMap<String,fileReplicationData>database = new ConcurrentHashMap<>();
 
-    public static fileReplicationDatabase getDatabase(String filename){
+    public synchronized static fileReplicationDatabase getDatabase(String filename){
         if(!fileReplicationDatabase.instantiated){
             fileReplicationDatabase.singleton = new fileReplicationDatabase(filename);
             fileReplicationDatabase.instantiated = true;
