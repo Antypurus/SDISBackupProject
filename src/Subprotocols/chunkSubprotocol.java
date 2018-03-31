@@ -32,7 +32,7 @@ public class chunkSubprotocol implements Runnable{
 
     @Override
     public void run() {
-        backedUpFileDatabase db = backedUpFileDatabase.getDatabase("backedUpFileDatabase.db");
+        backedUpFileDatabase db = backedUpFileDatabase.getDatabase();
         backedUpFileData data = db.getRegisteredBackedUpFileData(this.msg.getFileID());
         if(data!=null) {
             String filepath = data.getFilepath();

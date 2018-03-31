@@ -36,7 +36,7 @@ public class removedSubprotocol implements Runnable{
 
     @Override
     public void run() {
-        fileReplicationDatabase db = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
+        fileReplicationDatabase db = fileReplicationDatabase.getDatabase();
         fileReplicationData data = db.getRegisteredFileReplicationData(this.message.getFileID(),this.message.getChunkNO());
         data.removePeerWhoStored(this.message.getSenderID());
 
@@ -51,7 +51,7 @@ public class removedSubprotocol implements Runnable{
 
         if(curr<wanted) {
             int diff = wanted - curr;
-            fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDatabase.db");
+            fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase();
             fileBackUpData datab = dba.getRegisteredFileBackupData(this.message.getFileID(),this.message.getChunkNO());
 
             if (datab != null) {

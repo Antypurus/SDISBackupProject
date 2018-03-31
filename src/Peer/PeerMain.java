@@ -15,9 +15,9 @@ import java.util.Scanner;
 
 public class PeerMain {
   public static void main(String args[]) throws IOException, InterruptedException {
-      fileReplicationDatabase dba = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
-      fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDataDatabase.db");
-      backedUpFileDatabase dbs = backedUpFileDatabase.getDatabase("backedUpFileDatabase.db");
+      fileReplicationDatabase dba = fileReplicationDatabase.getDatabase();
+      fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase();
+      backedUpFileDatabase dbs = backedUpFileDatabase.getDatabase();
         dba.save();
         db.save();
         dbs.save();

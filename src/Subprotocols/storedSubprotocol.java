@@ -3,9 +3,7 @@ package Subprotocols;
 import MessageHandler.Message;
 import MessageHandler.storedMessage;
 import Utils.Logging;
-import fileDatabase.fileBackUpData;
-import fileDatabase.fileBackUpDatabase;
-import fileDatabase.fileReplicationDatabase;
+import fileDatabase.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,20 +32,20 @@ public class storedSubprotocol implements Runnable{
 
     @Override
     public void run() {
-
-        fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDataDatabase.db");
-        if(db.getRegisteredFileBackupData(this.msg.getFileID(),this.msg.getChunkNO())!=null){
-            byte[] send = this.outMsg.toString().getBytes();
-            DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
-            try {
-                this.socket.send(packet);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return;
-        }
-
         if(this.msg.getSenderID()!=this.senderId){
+
+            fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase();
+            if(db.getRegisteredFileBackupData(this.msg.getFileID(),this.msg.getChunkNO())!=null){
+                byte[] send = this.outMsg.toString().getBytes();
+                DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
+                try {
+                    this.socket.send(packet);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+
             boolean stored = false;
             try {
                 FileOutputStream file = new FileOutputStream("stored/"+this.msg.getFileID()+this.msg.getChunkNO());
@@ -67,10 +65,28 @@ public class storedSubprotocol implements Runnable{
             }
 
             if(stored){
-                fileReplicationDatabase dba = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
-                dba.getRegisteredFileReplicationData(this.msg.getFileID(),this.msg.getChunkNO()).storedChunks.add(this.msg.getChunkNO());
+                fileReplicationDatabase dba = fileReplicationDatabase.getDatabase();
+                fileReplicationData datab = dba.getRegisteredFileReplicationData(this.msg.getFileID(),this.msg.getChunkNO());
+                if(datab==null){
+                    datab = new fileReplicationData(this.msg.getReplicationDeg(),this.msg.getFileID(),this.msg.getChunkNO());
+                    dba.registerFileReplicationData(datab);
+                }
+                datab.addPeerWhoStored(this.senderId);
                 try {
                     dba.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                backedUpFileDatabase dt =  backedUpFileDatabase.getDatabase();
+                backedUpFileData dtt = dt.getRegisteredBackedUpFileData(this.msg.getFileID()+this.msg.getChunkNO());
+                if(dtt==null){
+                    dtt = new backedUpFileData(this.msg.getFileID()+this.msg.getChunkNO(),"/stored"+this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getFileID(),0);
+                    dt.registerBackeUpFile(this.msg.getFileID()+this.msg.getChunkNO(),dtt);
+                }
+                dtt.numberOfChunks++;
+                try {
+                    dt.save();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

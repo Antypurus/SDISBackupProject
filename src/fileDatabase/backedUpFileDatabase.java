@@ -7,17 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class backedUpFileDatabase implements Serializable{
 
-    private static backedUpFileDatabase singleton = null;
+    private static backedUpFileDatabase singleton = new backedUpFileDatabase("backedUpFileDatabase.db");
     private static boolean instantiated = false;
 
     private String databaseFilepath;
     public ConcurrentHashMap<String,backedUpFileData> database = new ConcurrentHashMap<>();
 
-    public static backedUpFileDatabase getDatabase(String file){
-        if(!backedUpFileDatabase.instantiated){
-            backedUpFileDatabase.singleton = new backedUpFileDatabase(file);
-            backedUpFileDatabase.instantiated = true;
-        }
+    public static backedUpFileDatabase getDatabase(){
         return backedUpFileDatabase.singleton;
     }
 

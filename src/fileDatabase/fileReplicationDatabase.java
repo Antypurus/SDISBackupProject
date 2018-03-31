@@ -8,15 +8,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class fileReplicationDatabase implements Serializable{
 
     private static boolean instantiated = false;
-    private  static fileReplicationDatabase singleton = null;
+    private  static fileReplicationDatabase singleton = new fileReplicationDatabase("fileReplicationDatabase.db");
 
     private String databaseFilepath;
     private ConcurrentHashMap<Pair<String,Integer>,fileReplicationData>database = new ConcurrentHashMap<>();
 
-    public static fileReplicationDatabase getDatabase(String filename){
-        if(!fileReplicationDatabase.instantiated){
-            initer(filename);
-        }
+    public static fileReplicationDatabase getDatabase(){
         return fileReplicationDatabase.singleton;
     }
 

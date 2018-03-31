@@ -75,7 +75,7 @@ public class putchunkSubprotocol {
             trdd.start();
         }
 
-        backedUpFileDatabase db = backedUpFileDatabase.getDatabase("backedUpFileDatabase.db");
+        backedUpFileDatabase db = backedUpFileDatabase.getDatabase();
         db.registerBackeUpFile(fileID,new backedUpFileData(fileID,filepath,fileID,ctr+1));
         db.save();
     }

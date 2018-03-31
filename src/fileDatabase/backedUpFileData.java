@@ -7,7 +7,7 @@ public class backedUpFileData implements Serializable{
     private String filename;
     private String filepath;
     private String fileId;
-    private int numberOfChunks = 0;
+    public int numberOfChunks = 0;
 
     /**
      *

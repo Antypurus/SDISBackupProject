@@ -48,7 +48,7 @@ public class dispatcherMessageHandler implements Runnable{
                             stub.addInboundMessage(msg);
                         }
 
-                        fileReplicationDatabase db = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
+                        fileReplicationDatabase db = fileReplicationDatabase.getDatabase();
                         db.registerFileReplicationData(new fileReplicationData(100, msg.getFileID(), msg.getChunkNO()));
                         fileReplicationData data = db.getRegisteredFileReplicationData(msg.getFileID(),msg.getChunkNO());
                         data.addPeerWhoStored(msg.getSenderID());

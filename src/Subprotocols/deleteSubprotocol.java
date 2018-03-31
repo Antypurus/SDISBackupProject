@@ -29,10 +29,10 @@ public class deleteSubprotocol {
     }
 
     public void run(){
-        fileReplicationDatabase db = fileReplicationDatabase.getDatabase("fileReplicationDatabase.db");
+        fileReplicationDatabase db = fileReplicationDatabase.getDatabase();
         fileReplicationData data =  db.getRegisteredFileReplicationData(this.message.getFileID(),this.message.getChunkNO());
 
-        fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase("fileBackUpDatabase.db");
+        fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase();
         fileBackUpData datab = null;
         for(int i=0;i<data.storedChunks.size();++i){
             datab = dba.getRegisteredFileBackupData(this.message.getFileID(),data.storedChunks.get(i));
