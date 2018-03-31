@@ -11,9 +11,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class storedSubprotocol implements Runnable{
 
+    private static long seed = 864354352198187321L;
     private MulticastSocket socket;
     private int senderId;
     private Message msg;
@@ -36,6 +39,15 @@ public class storedSubprotocol implements Runnable{
             fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase();
             if(db.getRegisteredFileBackupData(this.msg.getFileID(),this.msg.getChunkNO())!=null){
                 Logging.FatalSuccessLog("File Already Stored Sending Stored Message");
+
+                int sleep = ThreadLocalRandom.current().nextInt(0,(400+1));
+
+                try {
+                    Thread.sleep(sleep);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 byte[] send = this.outMsg.toString().getBytes();
                 DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
                 try {
@@ -66,6 +78,13 @@ public class storedSubprotocol implements Runnable{
             }
 
             if(stored){
+                int sleep = ThreadLocalRandom.current().nextInt(0,(400+1));
+
+                try {
+                    Thread.sleep(sleep);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 byte[] send = this.outMsg.toString().getBytes();
                 DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
