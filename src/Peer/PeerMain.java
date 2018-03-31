@@ -47,7 +47,7 @@ public class PeerMain {
     thread.start();
 
     if(s.equals("s")) {
-        putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt", registry, socket, InetAddress.getByName("224.0.1.1"), 5151);
+        putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt", registry, socket, InetAddress.getByName("224.0.1.1"), 5151,1);
     }
   }
 }
