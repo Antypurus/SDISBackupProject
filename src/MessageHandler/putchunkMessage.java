@@ -44,7 +44,6 @@ public class putchunkMessage extends Message {
         String ret = this.messageType.name() + " " + this.protocolVersion;
         ret += " " + this.senderID + " " + this.FileID + " ";
         ret += this.chunkNO + " " + this.replicationDeg + "\r\n"+" \r\n"+" "+this.body;
-        ret = ret.trim();
         return ret;
     }
 
