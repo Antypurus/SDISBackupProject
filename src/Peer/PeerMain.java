@@ -1,5 +1,6 @@
 package Peer;
 
+import Utils.Constants;
 import Utils.threadRegistry;
 import Subprotocols.Dispatcher;
 import Subprotocols.putchunkSubprotocol;
@@ -28,6 +29,8 @@ public class PeerMain {
       dir.mkdir();
 
     threadRegistry registry = new threadRegistry();
+      Constants.registry = registry;
+
     MulticastSocket socket = new MulticastSocket(5151);
     socket.joinGroup(InetAddress.getByName("224.0.1.1"));
 

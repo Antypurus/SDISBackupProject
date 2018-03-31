@@ -1,10 +1,7 @@
 package Subprotocols;
 
 import MessageHandler.Message;
-import fileDatabase.fileBackUpData;
-import fileDatabase.fileBackUpDatabase;
-import fileDatabase.fileReplicationData;
-import fileDatabase.fileReplicationDatabase;
+import fileDatabase.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,8 +26,8 @@ public class deleteSubprotocol {
     }
 
     public void run(){
-        fileReplicationDatabase db = fileReplicationDatabase.getDatabase();
-        fileReplicationData data =  db.getRegisteredFileReplicationData(this.message.getFileID(),this.message.getChunkNO());
+        backedUpFileDatabase db = backedUpFileDatabase.getDatabase();
+        backedUpFileData data =  db.getRegisteredBackedUpFileData(this.message.getFileID()+this.message.getChunkNO());
 
         fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase();
         fileBackUpData datab = null;
@@ -50,8 +47,7 @@ public class deleteSubprotocol {
             }
         }
         data.storedChunks.clear();
-
-        db.unregisterFileReplicationData(this.message.getFileID(),this.message.getChunkNO());
+        db.unregisterBackedUpFile(this.message.getFileID()+this.message.getChunkNO());
         try {
             db.save();
         } catch (IOException e) {

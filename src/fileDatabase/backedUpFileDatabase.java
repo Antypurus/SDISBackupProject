@@ -1,8 +1,10 @@
 package fileDatabase;
 
+import Utils.Logging;
 import javafx.util.Pair;
 
 import java.io.*;
+import java.util.ConcurrentModificationException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class backedUpFileDatabase implements Serializable{
@@ -64,7 +66,11 @@ public class backedUpFileDatabase implements Serializable{
     public synchronized void save() throws IOException {
         FileOutputStream file = new FileOutputStream(this.databaseFilepath);
         ObjectOutputStream stream = new ObjectOutputStream(file);
-        stream.writeObject(this);
+        try{
+            stream.writeObject(this);
+        }catch (ConcurrentModificationException e){
+            Logging.FatalErrorLog("Trying to write at the same time to databse");
+        }
         stream.close();
         file.close();
     }

@@ -65,6 +65,15 @@ public class storedSubprotocol implements Runnable{
             }
 
             if(stored){
+
+                byte[] send = this.outMsg.toString().getBytes();
+                DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
+                try {
+                    this.socket.send(packet);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 fileReplicationDatabase dba = fileReplicationDatabase.getDatabase();
                 fileReplicationData datab = dba.getRegisteredFileReplicationData(this.msg.getFileID(),this.msg.getChunkNO());
                 if(datab==null){
@@ -84,17 +93,9 @@ public class storedSubprotocol implements Runnable{
                     dtt = new backedUpFileData(this.msg.getFileID()+this.msg.getChunkNO(),"/stored"+this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getFileID(),0);
                     dt.registerBackeUpFile(this.msg.getFileID()+this.msg.getChunkNO(),dtt);
                 }
-                dtt.numberOfChunks++;
+                dtt.addStoredChunk(this.msg.getChunkNO());
                 try {
                     dt.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                byte[] send = this.outMsg.toString().getBytes();
-                DatagramPacket packet = new DatagramPacket(send,send.length,this.address,this.port);
-                try {
-                    this.socket.send(packet);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

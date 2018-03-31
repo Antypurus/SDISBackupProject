@@ -1,6 +1,10 @@
 package Utils;
 
 public class Constants {
+
+    //for ease of access
+    public static threadRegistry registry = null;
+
     //Logging configuration values
     public static final boolean LOG = true;
     public static final boolean FATAL_LOG = true;
