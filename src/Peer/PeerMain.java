@@ -16,34 +16,57 @@ import java.net.MulticastSocket;
 import java.util.Scanner;
 
 public class PeerMain {
-    public static void main(String args[]) throws IOException, InterruptedException {
+
+    public static void engageDatabases() throws IOException {
         fileReplicationDatabase dba = fileReplicationDatabase.getDatabase();
         fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase();
         backedUpFileDatabase dbs = backedUpFileDatabase.getDatabase();
         dba.save();
         db.save();
         dbs.save();
+    }
 
+    public static void engageSockets(String MCaddress,int MCport,String MDBaddress,int MDBport,String MDRaddress,int MDRport) throws IOException {
+        MulticastSocket socket = new MulticastSocket(MCport);
+        socket.joinGroup(InetAddress.getByName(MCaddress));
+
+        MulticastSocket mdb = new MulticastSocket(MDBport);
+        mdb.joinGroup(InetAddress.getByName(MDBaddress));
+
+        MulticastSocket mdr = new MulticastSocket(MDRport);
+        mdr.joinGroup(InetAddress.getByName(MDRaddress));
+
+        Constants.MC = new Channel(socket,InetAddress.getByName(MCaddress),MCport);
+        Constants.MDB = new Channel(mdb,InetAddress.getByName(MDBaddress),MDBport);
+        Constants.MDR = new Channel(mdr,InetAddress.getByName(MDRaddress),MDRport);
+    }
+
+    public static void engageDispatchers(int senderID){
+        Dispatcher dispatcher = new Dispatcher(Constants.MC.socket, Constants.registry, Constants.MC.address, Constants.MC.port, senderID);
+        Thread thread = new Thread(dispatcher);
+        thread.start();
+
+        Dispatcher dispatcher2 = new Dispatcher(Constants.MDR.socket, Constants.registry, Constants.MDR.address, Constants.MDR.port, senderID);
+        Thread thread2 = new Thread(dispatcher2);
+        thread2.start();
+
+        Dispatcher dispatcher3 = new Dispatcher(Constants.MDB.socket, Constants.registry, Constants.MDB.address, Constants.MDB.port, senderID);
+        Thread thread3 = new Thread(dispatcher3);
+        thread3.start();
+    }
+
+    public static void main(String args[]) throws IOException {
         File dir = new File("stored");
         dir.mkdir();
         dir = new File("restored");
         dir.mkdir();
 
+        engageDatabases();
+
         threadRegistry registry = new threadRegistry();
         Constants.registry = registry;
 
-        MulticastSocket socket = new MulticastSocket(5151);
-        socket.joinGroup(InetAddress.getByName("224.0.1.1"));
-
-        MulticastSocket mdb = new MulticastSocket(5151);
-        socket.joinGroup(InetAddress.getByName("224.0.1.2"));
-
-        MulticastSocket mdr = new MulticastSocket(5151);
-        socket.joinGroup(InetAddress.getByName("224.0.1.3"));
-
-        Constants.MC = new Channel(socket,InetAddress.getByName("224.0.1.1"),5151);
-        Constants.MDB = new Channel(mdb,InetAddress.getByName("224.0.1.2"),5151);
-        Constants.MDR = new Channel(mdr,InetAddress.getByName("224.0.1.3"),5151);
+        engageSockets("224.0.1.1",5151,"224.0.1.1",5152,"224.0.1.3",5151);
 
         int senderId = 0;
         Scanner scanner = new Scanner(System.in);
@@ -53,17 +76,7 @@ public class PeerMain {
         System.out.print("send:");
         String s = scanner.next();
 
-        Dispatcher dispatcher = new Dispatcher(Constants.MC.socket, registry, Constants.MC.address, Constants.MC.port, senderId);
-        Thread thread = new Thread(dispatcher);
-        thread.start();
-
-        Dispatcher dispatcher2 = new Dispatcher(Constants.MDR.socket, registry, Constants.MDR.address, Constants.MDR.port, senderId);
-        Thread thread2 = new Thread(dispatcher2);
-        thread2.start();
-
-        Dispatcher dispatcher3 = new Dispatcher(Constants.MDB.socket, registry, Constants.MDB.address, Constants.MDB.port, senderId);
-        Thread thread3 = new Thread(dispatcher3);
-        thread3.start();
+        engageDispatchers(senderId);
 
         if (s.equals("s")) {
             putchunkSubprotocol put = new putchunkSubprotocol(senderId, "test.txt", registry, Constants.MDB.socket, Constants.MDB.address, Constants.MDB.port, 1);
