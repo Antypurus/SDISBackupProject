@@ -66,7 +66,7 @@ public class PeerMain {
         thread3.start();
 
         if (s.equals("s")) {
-            putchunkSubprotocol put = new putchunkSubprotocol(0, "test.txt", registry, Constants.MDB.socket, Constants.MDB.address, Constants.MDB.port, 1);
+            putchunkSubprotocol put = new putchunkSubprotocol(senderId, "test.txt", registry, Constants.MDB.socket, Constants.MDB.address, Constants.MDB.port, 1);
         }
     }
 }

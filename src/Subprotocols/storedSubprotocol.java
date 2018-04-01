@@ -39,7 +39,7 @@ public class storedSubprotocol implements Runnable{
             fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase();
             if(db.getRegisteredFileBackupData(this.msg.getFileID(),this.msg.getChunkNO())!=null){
                 Logging.FatalSuccessLog("File Already Stored Sending Stored Message");
-
+                Logging.FatalErrorLog(this.msg.toString());
                 int sleep = ThreadLocalRandom.current().nextInt(0,(400+1));
 
                 try {
