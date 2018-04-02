@@ -17,13 +17,10 @@ public class TestApp {
             e.printStackTrace();
         }
 
-
-
         deleteRemoteInterface del = (deleteRemoteInterface)registry.lookup("delete");
         if(del!=null) {
             del.delete("test.txt");
         }
-
 
         /**
         getchunkRemoteInterface get = (getchunkRemoteInterface)registry.lookup("getchunk");
@@ -32,7 +29,6 @@ public class TestApp {
             get.restore("test.txt");
         }
         **/
-
 
         /**
         backupRemoteInterface bk = (backupRemoteInterface)registry.lookup("backup");
