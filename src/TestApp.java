@@ -1,6 +1,8 @@
+import RMI.ServerInterface;
 import RMI.backupRemoteInterface;
 import RMI.deleteRemoteInterface;
 import RMI.getchunkRemoteInterface;
+import Utils.Logging;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -18,25 +20,28 @@ public class TestApp {
             e.printStackTrace();
         }
 
-        deleteRemoteInterface del = (deleteRemoteInterface)registry.lookup("delete");
-        if(del!=null) {
-            del.delete("test.txt");
+        ServerInterface server = (ServerInterface) registry.lookup(args[0]);
+        if (server != null) {
+            switch (args[1]) {
+                case ("BACKUP"): {
+                    Logging.LogSuccess("BACKUP SUBPROCCESS SELECTED");
+                    server.backup(args[2], Integer.parseInt(args[3]));
+                    break;
+                }
+                case ("RESTORE"): {
+                    Logging.LogSuccess("RESTORE SUBPROCCESS SELECTED");
+                    server.restore(args[2]);
+                    break;
+                }
+                case ("DELETE"): {
+                    Logging.LogSuccess("DELETE SUBPROCCESS SELECTED");
+                    server.delete(args[2]);
+                    break;
+                }
+                default:
+                    break;
+            }
+            server.delete("test.txt");
         }
-
-        /**
-        getchunkRemoteInterface get = (getchunkRemoteInterface)registry.lookup("getchunk");
-        if(get!=null) {
-            System.out.println("Restore Initiated");
-            get.restore("test.txt");
-        }
-        **/
-
-        /**
-        backupRemoteInterface bk = (backupRemoteInterface)registry.lookup("backup");
-        if(bk!=null) {
-            bk.backup("test.txt", 1);
-        }
-        **/
     }
-
 }
