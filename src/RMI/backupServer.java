@@ -6,6 +6,7 @@ import Utils.threadRegistry;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.rmi.RemoteException;
 
 public class backupServer implements backupRemoteInterface,Runnable {
 
@@ -18,7 +19,7 @@ public class backupServer implements backupRemoteInterface,Runnable {
     private int             repDeg;
 
     @Override
-    public void backup(String filepath,int replicationDegree) {
+    public void backup(String filepath,int replicationDegree) throws RemoteException {
         this.backup = filepath;
         this.repDeg = replicationDegree;
         Thread thread = new Thread(this);

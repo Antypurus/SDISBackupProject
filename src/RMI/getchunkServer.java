@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class getchunkServer implements  getchunkRemoteInterface{
@@ -28,7 +29,7 @@ public class getchunkServer implements  getchunkRemoteInterface{
     }
 
     @Override
-    public void getChunk(String filepath, int chunkNo) {
+    public void getChunk(String filepath, int chunkNo) throws RemoteException {
         backedUpFileDatabase db = backedUpFileDatabase.getDatabase();
         backedUpFileData data = db.getRegisteredBackedUpFileData(filepath);
         if(data!=null) {
@@ -41,7 +42,7 @@ public class getchunkServer implements  getchunkRemoteInterface{
     }
 
     @Override
-    public void restore(String filepath) {
+    public void restore(String filepath) throws RemoteException{
         backedUpFileDatabase db = backedUpFileDatabase.getDatabase();
         backedUpFileData data = db.getRegisteredBackedUpFileData(filepath);
         if(data!=null) {

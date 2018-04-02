@@ -4,6 +4,7 @@ import MessageStubs.deleteMessageStub;
 
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.rmi.RemoteException;
 
 public class deleteServer implements deleteRemoteInterface {
 
@@ -21,7 +22,7 @@ public class deleteServer implements deleteRemoteInterface {
     }
 
     @Override
-    public void delete(String filepath) {
+    public void delete(String filepath) throws RemoteException {
         this.delete = filepath;
         deleteMessageStub stub = new deleteMessageStub(this.socket,this.address,this.port,this.senderID,filepath);
         Thread thread = new Thread(stub);

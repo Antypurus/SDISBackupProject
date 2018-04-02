@@ -1,5 +1,3 @@
-package Peer;
-
 import RMI.*;
 import Utils.Channel;
 import Utils.Constants;
