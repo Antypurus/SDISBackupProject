@@ -73,11 +73,13 @@ public class threadRegistry {
      * @param fileId
      */
     public void registerGetchunkThread(MessageStub stub,String fileId,int chunkNo){
-        Logging.Log("[LOG]@putchunkThreadRegistry:registerPutchunkThread-Registering thread with <"+fileId+">");
+        Logging.Log("[LOG]@putchunkThreadRegistry:registerGetchunkThread-Registering thread with <"+fileId+">");
         Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
         if(!this.getchunkThreadRegistry.containsKey(key)){
             this.getchunkThreadRegistry.put(key,stub);
+            return;
         }
+        Logging.LogError("Getchunk Key Already Registered");
     }
 
     /**
@@ -88,6 +90,7 @@ public class threadRegistry {
     public MessageStub getGetchunkThread(String fileId,int chunkNo){
         Pair<String,Integer>key = new Pair<>(fileId,chunkNo);
         if(!this.getchunkThreadRegistry.containsKey(key)){
+            Logging.LogError("Getchunk Key Not Registered");
             return null;
         }
         return this.getchunkThreadRegistry.get(key);

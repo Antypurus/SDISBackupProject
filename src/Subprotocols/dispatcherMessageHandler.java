@@ -67,10 +67,11 @@ public class dispatcherMessageHandler implements Runnable{
                         break;
                     }
                     case CHUNK: {
-                        MessageStub stub = this.registry.getGetchunkThread(msg.getFileID(), msg.getChunkNO());
+                        MessageStub stub = Constants.registry.getGetchunkThread(msg.getFileID(), msg.getChunkNO());
                         if (stub != null) {
-                            Logging.FatalErrorLog("No Thread Registered For This Chunk:"+msg.toString());
                             stub.addInboundMessage(msg);
+                        }else{
+                            Logging.FatalErrorLog("No Thread Registered For This Chunk:"+msg.getChunkNO()+" with fileID:"+msg.getFileID());
                         }
                         break;
                     }
