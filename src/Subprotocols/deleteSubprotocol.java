@@ -56,13 +56,14 @@ public class deleteSubprotocol {
                 e.printStackTrace();
             }
         }
+        /**
         database.chunks.clear();
         db.unregisterBackedUpFile(this.message.getFileID()+this.message.getChunkNO());
         try {
             db.save();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }**/
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.ConcurrentModificationException;
 public class storedChunkDatabase implements Serializable {
     public ArrayList<Integer> chunks;
     public String filepath;
-    private static storedChunkDatabase singleton = new storedChunkDatabase("fileDatabase.storedChunkDatabase.db");
+    private static storedChunkDatabase singleton = new storedChunkDatabase("storedChunkDatabase.db");
 
     public static storedChunkDatabase getDatabase(){
         return singleton;

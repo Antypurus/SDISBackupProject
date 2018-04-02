@@ -18,6 +18,7 @@ public class TestApp {
         }
 
 
+
         deleteRemoteInterface del = (deleteRemoteInterface)registry.lookup("delete");
         if(del!=null) {
             del.delete("test.txt");
