@@ -128,7 +128,7 @@ public class getChunkMessageStub implements Runnable,MessageStub {
             }
             if(msg!=null && this.messageValidator(msg)){
                 try {
-                    FileOutputStream file = new FileOutputStream(msg.getFileID()+msg.getChunkNO());
+                    FileOutputStream file = new FileOutputStream("restored/"+msg.getFileID()+msg.getChunkNO());
                     file.write(msg.getBody().getBytes());
                     file.close();
                     return;
