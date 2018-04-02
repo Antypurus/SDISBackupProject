@@ -27,7 +27,6 @@ public class chunkMessage extends Message{
         String ret = this.messageType.name() + " " + this.protocolVersion;
         ret += " " + this.senderID + " " + this.FileID + " ";
         ret += this.chunkNO  + " \r\n"+" \r\n"+" "+this.body;
-        ret = ret.trim();
         return ret;
     }
 }
