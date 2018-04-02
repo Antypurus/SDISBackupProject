@@ -1,5 +1,7 @@
 package Peer;
 
+import RMI.backupRemoteInterface;
+import RMI.backupServer;
 import Utils.Channel;
 import Utils.Constants;
 import Utils.threadRegistry;
@@ -13,7 +15,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.rmi.AlreadyBoundException;
 import java.util.Scanner;
+
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class PeerMain {
 
@@ -55,7 +63,7 @@ public class PeerMain {
         thread3.start();
     }
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, AlreadyBoundException {
         File dir = new File("stored");
         dir.mkdir();
         dir = new File("restored");
@@ -78,8 +86,16 @@ public class PeerMain {
 
         engageDispatchers(senderId);
 
+        backupServer bck = new backupServer(senderId,registry,Constants.MDB.socket,Constants.MDB.address,Constants.MDB.port);
+        backupRemoteInterface backup = (backupRemoteInterface)UnicastRemoteObject.exportObject(bck,0);
+
+        Registry registry1 = LocateRegistry.getRegistry();
+        registry1.bind("backup",backup);
+
+
+        /**
         if (s.equals("s")) {
             putchunkSubprotocol put = new putchunkSubprotocol(senderId, "test.txt", registry, Constants.MDB.socket, Constants.MDB.address, Constants.MDB.port, 1);
-        }
+        }**/
     }
 }
