@@ -48,7 +48,9 @@ public class getchunkServer implements  getchunkRemoteInterface{
         backedUpFileDatabase db = backedUpFileDatabase.getDatabase();
         backedUpFileData data = db.getRegisteredBackedUpFileData(filepath);
         if(data!=null) {
+            Logging.LogSuccess("Starting Restore For FileID:"+data.getFileId());
             int numberOfChunk = data.getNumberOfChunks();
+            Logging.LogSuccess("Has "+numberOfChunk+" chunks");
             ArrayList<Thread>threads = new ArrayList<>();
             for(int chunkNo = 0;chunkNo<numberOfChunk;++chunkNo) {
                 getChunkMessageStub stub = new getChunkMessageStub(this.socket, this.address, this.port, data.getFileId(), this.senderID, chunkNo);

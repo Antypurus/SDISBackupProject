@@ -42,7 +42,7 @@ public class getChunkMessageStub implements Runnable,MessageStub {
     }
 
     @Override
-    public void addInboundMessage(Message message) {
+    public synchronized void addInboundMessage(Message message) {
         if(this.inboundQueue!=null){
             this.inboundQueue.add(message);
             this.notify();
@@ -50,7 +50,7 @@ public class getChunkMessageStub implements Runnable,MessageStub {
     }
 
     @Override
-    public Message getInboundMessage() throws InterruptedException {
+    public synchronized Message getInboundMessage() throws InterruptedException {
         while(this.inboundQueue.isEmpty()){
             this.wait(this.timeoutPerior);
             if(this.inboundQueue.isEmpty()){

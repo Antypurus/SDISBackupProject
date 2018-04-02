@@ -95,9 +95,9 @@ public class Peer {
             deleteRemoteInterface delete = (deleteRemoteInterface) UnicastRemoteObject.exportObject(del, 0);
 
             Registry registry1 = LocateRegistry.getRegistry();
-            registry1.bind("backup", backup);
-            registry1.bind("getchunk", getchunk);
-            registry1.bind("delete", delete);
+            registry1.rebind("backup", backup);
+            registry1.rebind("getchunk", getchunk);
+            registry1.rebind("delete", delete);
 
             Logging.FatalSuccessLog("Started RMI Servers");
         }
