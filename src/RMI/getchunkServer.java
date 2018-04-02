@@ -51,6 +51,7 @@ public class getchunkServer implements  getchunkRemoteInterface{
             for(int chunkNo = 0;chunkNo<numberOfChunk;++chunkNo) {
                 getChunkMessageStub stub = new getChunkMessageStub(this.socket, this.address, this.port, data.getFileId(), this.senderID, chunkNo);
                 Thread thread = new Thread(stub);
+                threads.add(thread);
                 thread.start();
             }
 
