@@ -33,7 +33,7 @@ public class Peer {
         dbs.save();
     }
 
-    public static void engageSockets(String MCaddress,int MCport,String MDBaddress,int MDBport,String MDRaddress,int MDRport) throws IOException {
+    public static void engageSockets(String MCaddress, int MCport, String MDBaddress, int MDBport, String MDRaddress, int MDRport) throws IOException {
         MulticastSocket socket = new MulticastSocket(MCport);
         socket.joinGroup(InetAddress.getByName(MCaddress));
 
@@ -43,12 +43,12 @@ public class Peer {
         MulticastSocket mdr = new MulticastSocket(MDRport);
         mdr.joinGroup(InetAddress.getByName(MDRaddress));
 
-        Constants.MC = new Channel(socket,InetAddress.getByName(MCaddress),MCport);
-        Constants.MDB = new Channel(mdb,InetAddress.getByName(MDBaddress),MDBport);
-        Constants.MDR = new Channel(mdr,InetAddress.getByName(MDRaddress),MDRport);
+        Constants.MC = new Channel(socket, InetAddress.getByName(MCaddress), MCport);
+        Constants.MDB = new Channel(mdb, InetAddress.getByName(MDBaddress), MDBport);
+        Constants.MDR = new Channel(mdr, InetAddress.getByName(MDRaddress), MDRport);
     }
 
-    public static void engageDispatchers(int senderID){
+    public static void engageDispatchers(int senderID) {
         Dispatcher dispatcher = new Dispatcher(Constants.MC.socket, Constants.registry, Constants.MC.address, Constants.MC.port, senderID);
         Thread thread = new Thread(dispatcher);
         thread.start();
@@ -73,49 +73,32 @@ public class Peer {
         threadRegistry registry = new threadRegistry();
         Constants.registry = registry;
 
-        engageSockets("224.0.1.1",5151,"224.0.1.1",5152,"224.0.1.3",5151);
+        String[] MC = args[3].split(":");
+        String[] MDB = args[4].split(":");
+        String[] MDR = args[5].split(":");
 
-        int senderId = 0;
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("SenderID:");
-        senderId = scanner.nextInt();
+        engageSockets(MC[0], Integer.parseInt(MC[1]), MDB[0], Integer.parseInt(MDB[1]), MDR[0], Integer.parseInt(MDR[1]));
 
-        System.out.print("send:");
-        String s = scanner.next();
+        int senderId = Integer.parseInt(args[1]);
 
         engageDispatchers(senderId);
 
-        if(s.equals("s")) {
-            backupServer bck = new backupServer(senderId, registry, Constants.MDB.socket, Constants.MDB.address, Constants.MDB.port);
-            backupRemoteInterface backup = (backupRemoteInterface) UnicastRemoteObject.exportObject(bck, 0);
+        Server bck = new Server(senderId);
+        ServerInterface backup = (ServerInterface) UnicastRemoteObject.exportObject(bck, 0);
 
-            getchunkServer get = new getchunkServer(Constants.MC.socket, Constants.MC.address, Constants.MC.port, senderId);
-            getchunkRemoteInterface getchunk = (getchunkRemoteInterface) UnicastRemoteObject.exportObject(get, 0);
+        Registry registry1 = LocateRegistry.getRegistry();
+        registry1.rebind(args[2], backup);
 
-            deleteServer del = new deleteServer(Constants.MC.socket, Constants.MC.address, Constants.MC.port, senderId);
-            deleteRemoteInterface delete = (deleteRemoteInterface) UnicastRemoteObject.exportObject(del, 0);
+        Logging.FatalSuccessLog("Started RMI Servers");
 
-            Registry registry1 = LocateRegistry.getRegistry();
-            registry1.rebind("backup", backup);
-            registry1.rebind("getchunk", getchunk);
-            registry1.rebind("delete", delete);
+        backedUpFileDatabase dbs = backedUpFileDatabase.getDatabase();
 
-            Logging.FatalSuccessLog("Started RMI Servers");
-
-            backedUpFileDatabase dbs = backedUpFileDatabase.getDatabase();
-
-            dbs.setDatabaseFilepath("backedUpFileDatabaseInitiator.db");
-            try {
-                dbs.read();
-            } catch (FileNotFoundException e) {
-                dbs.save();
-            }
+        dbs.setDatabaseFilepath("backedUpFileDatabaseInitiator.db");
+        try {
+            dbs.read();
+        } catch (FileNotFoundException e) {
             dbs.save();
         }
-
-        /**
-        if (s.equals("s")) {
-            putchunkSubprotocol put = new putchunkSubprotocol(senderId, "test.txt", registry, Constants.MDB.socket, Constants.MDB.address, Constants.MDB.port, 1);
-        }**/
+        dbs.save();
     }
 }

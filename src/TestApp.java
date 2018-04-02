@@ -12,7 +12,8 @@ public class TestApp {
     public static void main(String[] args) throws RemoteException, NotBoundException {
         Registry registry = null;
         try {
-            registry = LocateRegistry.getRegistry(null);
+            // //ip/id
+            registry = LocateRegistry.getRegistry();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
