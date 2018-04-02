@@ -10,6 +10,7 @@ import fileDatabase.fileBackUpDatabase;
 import fileDatabase.fileReplicationDatabase;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -61,7 +62,7 @@ public class Peer {
         thread3.start();
     }
 
-    public static void main(String args[]) throws IOException, AlreadyBoundException {
+    public static void main(String args[]) throws IOException, AlreadyBoundException, ClassNotFoundException {
         File dir = new File("stored");
         dir.mkdir();
         dir = new File("restored");
@@ -106,7 +107,7 @@ public class Peer {
             dbs.setDatabaseFilepath("backedUpFileDatabaseInitiator.db");
             try {
                 dbs.read();
-            } catch (ClassNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 dbs.save();
             }
             dbs.save();

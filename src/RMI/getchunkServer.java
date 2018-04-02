@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.io.*;
 
 public class getchunkServer implements  getchunkRemoteInterface{
 
@@ -53,11 +54,14 @@ public class getchunkServer implements  getchunkRemoteInterface{
             Logging.LogSuccess("Has "+numberOfChunk+" chunks");
             ArrayList<Thread>threads = new ArrayList<>();
             for(int chunkNo = 0;chunkNo<numberOfChunk;++chunkNo) {
-                getChunkMessageStub stub = new getChunkMessageStub(this.socket, this.address, this.port, data.getFileId(), this.senderID, chunkNo);
-                Thread thread = new Thread(stub);
-                Constants.registry.registerGetchunkThread(stub,data.getFileId(),chunkNo);
-                threads.add(thread);
-                thread.start();
+                File file = new File("restored/"+data.getFileId()+chunkNo);
+                if(!file.exists()) {
+                    getChunkMessageStub stub = new getChunkMessageStub(this.socket, this.address, this.port, data.getFileId(), this.senderID, chunkNo);
+                    Thread thread = new Thread(stub);
+                    Constants.registry.registerGetchunkThread(stub, data.getFileId(), chunkNo);
+                    threads.add(thread);
+                    thread.start();
+                }
             }
 
             FileOutputStream file = null;
@@ -67,9 +71,12 @@ public class getchunkServer implements  getchunkRemoteInterface{
                 e.printStackTrace();
             }
 
-            for(int i=0;i<threads.size();++i){
+            for(int i=0;i<numberOfChunk;++i){
+                Logging.Log("Adding Chunk "+i+" to file restoration");
                 try {
-                    threads.get(i).join();
+                    if(i<threads.size()) {
+                        threads.get(i).join();
+                    }
                     FileInputStream read = null;
                     try {
                         read = new FileInputStream("restored/"+data.getFileId()+i);
