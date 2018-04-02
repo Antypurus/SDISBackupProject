@@ -1,6 +1,7 @@
 package RMI;
 
 import MessageStubs.getChunkMessageStub;
+import Utils.Constants;
 import Utils.Logging;
 import fileDatabase.backedUpFileData;
 import fileDatabase.backedUpFileDatabase;
@@ -36,6 +37,7 @@ public class getchunkServer implements  getchunkRemoteInterface{
             if (chunkNo < data.getNumberOfChunks()) {
                 getChunkMessageStub stub = new getChunkMessageStub(this.socket, this.address, this.port, data.getFileId(), this.senderID, chunkNo);
                 Thread thread = new Thread(stub);
+                Constants.registry.registerGetchunkThread(stub,data.getFileId(),chunkNo);
                 thread.start();
             }
         }
@@ -51,6 +53,7 @@ public class getchunkServer implements  getchunkRemoteInterface{
             for(int chunkNo = 0;chunkNo<numberOfChunk;++chunkNo) {
                 getChunkMessageStub stub = new getChunkMessageStub(this.socket, this.address, this.port, data.getFileId(), this.senderID, chunkNo);
                 Thread thread = new Thread(stub);
+                Constants.registry.registerGetchunkThread(stub,data.getFileId(),chunkNo);
                 threads.add(thread);
                 thread.start();
             }

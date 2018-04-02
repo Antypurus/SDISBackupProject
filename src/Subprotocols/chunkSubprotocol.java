@@ -2,8 +2,11 @@ package Subprotocols;
 
 import MessageHandler.Message;
 import MessageHandler.chunkMessage;
+import Utils.Logging;
 import fileDatabase.backedUpFileData;
 import fileDatabase.backedUpFileDatabase;
+import fileDatabase.fileBackUpData;
+import fileDatabase.fileBackUpDatabase;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,8 +35,8 @@ public class chunkSubprotocol implements Runnable{
 
     @Override
     public void run() {
-        backedUpFileDatabase db = backedUpFileDatabase.getDatabase();
-        backedUpFileData data = db.getRegisteredBackedUpFileData(this.msg.getFileID());
+        fileBackUpDatabase db = fileBackUpDatabase.getFileBackupDatabase();
+        fileBackUpData data = db.getRegisteredFileBackupData(this.msg.getFileID(),this.msg.getChunkNO());
         if(data!=null) {
             String filepath = data.getFilepath();
 
@@ -71,6 +74,7 @@ public class chunkSubprotocol implements Runnable{
                 }
             }
         }else{
+            Logging.FatalErrorLog("No Data Found For The Requested FileID:"+ msg.getFileID() + " and Chunk:"+msg.getChunkNO());
             return;
         }
     }

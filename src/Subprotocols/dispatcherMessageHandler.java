@@ -4,6 +4,7 @@ import MessageHandler.Message;
 import MessageHandler.messageType;
 import MessageStubs.MessageStub;
 import Utils.Constants;
+import Utils.Logging;
 import Utils.threadRegistry;
 import fileDatabase.fileReplicationData;
 import fileDatabase.fileReplicationDatabase;
@@ -68,6 +69,7 @@ public class dispatcherMessageHandler implements Runnable{
                     case CHUNK: {
                         MessageStub stub = this.registry.getGetchunkThread(msg.getFileID(), msg.getChunkNO());
                         if (stub != null) {
+                            Logging.FatalErrorLog("No Thread Registered For This Chunk:"+msg.toString());
                             stub.addInboundMessage(msg);
                         }
                         break;
