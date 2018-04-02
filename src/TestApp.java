@@ -1,4 +1,5 @@
 import RMI.backupRemoteInterface;
+import RMI.deleteRemoteInterface;
 import RMI.getchunkRemoteInterface;
 
 import java.rmi.NotBoundException;
@@ -17,11 +18,19 @@ public class TestApp {
         }
 
 
+        deleteRemoteInterface del = (deleteRemoteInterface)registry.lookup("delete");
+        if(del!=null) {
+            del.delete("test.txt");
+        }
+
+
+        /**
         getchunkRemoteInterface get = (getchunkRemoteInterface)registry.lookup("getchunk");
         if(get!=null) {
             System.out.println("Restore Initiated");
             get.restore("test.txt");
         }
+        **/
 
 
         /**

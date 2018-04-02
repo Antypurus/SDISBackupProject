@@ -106,9 +106,9 @@ public class storedSubprotocol implements Runnable{
                 }
 
                 backedUpFileDatabase dt =  backedUpFileDatabase.getDatabase();
-                backedUpFileData dtt = dt.getRegisteredBackedUpFileData(this.msg.getFileID()+this.msg.getChunkNO());
+                backedUpFileData dtt = dt.getRegisteredBackedUpFileData(this.msg.getFileID());
                 if(dtt==null){
-                    dtt = new backedUpFileData(this.msg.getFileID()+this.msg.getChunkNO(),"/stored"+this.msg.getFileID()+this.msg.getChunkNO(),this.msg.getFileID(),0);
+                    dtt = new backedUpFileData(this.msg.getFileID()+this.msg.getChunkNO(),"/stored"+this.msg.getFileID(),this.msg.getFileID(),0);
                     dt.registerBackeUpFile(this.msg.getFileID()+this.msg.getChunkNO(),dtt);
                 }
                 dtt.addStoredChunk(this.msg.getChunkNO());
@@ -117,6 +117,9 @@ public class storedSubprotocol implements Runnable{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                storedChunkDatabase database = storedChunkDatabase.getDatabase();
+                database.addChunk(this.msg.getChunkNO());
             }
         }
     }

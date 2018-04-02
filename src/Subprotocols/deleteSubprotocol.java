@@ -1,6 +1,7 @@
 package Subprotocols;
 
 import MessageHandler.Message;
+import Utils.Logging;
 import fileDatabase.*;
 
 import java.io.IOException;
@@ -31,6 +32,13 @@ public class deleteSubprotocol {
 
         fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase();
         fileBackUpData datab = null;
+        if(data==null){
+            Logging.FatalErrorLog("Failed To Find Files for this ");
+        }
+        for(int i=0;i<data.storedChunks.size();++i){
+            Logging.Log(""+i);
+            Logging.Log("About to delete chunk "+data.storedChunks.get(i));
+        }
         for(int i=0;i<data.storedChunks.size();++i){
             datab = dba.getRegisteredFileBackupData(this.message.getFileID(),data.storedChunks.get(i));
             try {
