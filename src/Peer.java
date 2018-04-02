@@ -21,7 +21,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class PeerMain {
+public class Peer {
 
     public static void engageDatabases() throws IOException {
         fileReplicationDatabase dba = fileReplicationDatabase.getDatabase();
