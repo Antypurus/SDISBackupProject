@@ -32,21 +32,23 @@ public class deleteSubprotocol {
 
         fileBackUpDatabase dba = fileBackUpDatabase.getFileBackupDatabase();
         fileBackUpData datab = null;
+
+        storedChunkDatabase database = storedChunkDatabase.getDatabase();
         if(data==null){
             Logging.FatalErrorLog("Failed To Find Files for this ");
         }
-        for(int i=0;i<data.storedChunks.size();++i){
+        for(int i=0;i<database.chunks.size();++i){
             Logging.Log(""+i);
-            Logging.Log("About to delete chunk "+data.storedChunks.get(i));
+            Logging.Log("About to delete chunk "+database.chunks.get(i));
         }
-        for(int i=0;i<data.storedChunks.size();++i){
-            datab = dba.getRegisteredFileBackupData(this.message.getFileID(),data.storedChunks.get(i));
+        for(int i=0;i<database.chunks.size();++i){
+            datab = dba.getRegisteredFileBackupData(this.message.getFileID(),database.chunks.get(i));
             try {
                 Files.delete(Paths.get(datab.getFilepath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            dba.unregisterFileBackUpData(this.message.getFileID(),data.storedChunks.get(i));
+            dba.unregisterFileBackUpData(this.message.getFileID(),database.chunks.get(i));
 
             try {
                 dba.save();
@@ -54,7 +56,7 @@ public class deleteSubprotocol {
                 e.printStackTrace();
             }
         }
-        data.storedChunks.clear();
+        database.chunks.clear();
         db.unregisterBackedUpFile(this.message.getFileID()+this.message.getChunkNO());
         try {
             db.save();
