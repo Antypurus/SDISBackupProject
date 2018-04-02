@@ -100,6 +100,16 @@ public class Peer {
             registry1.rebind("delete", delete);
 
             Logging.FatalSuccessLog("Started RMI Servers");
+
+            backedUpFileDatabase dbs = backedUpFileDatabase.getDatabase();
+
+            dbs.setDatabaseFilepath("backedUpFileDatabaseInitiator.db");
+            try {
+                dbs.read();
+            } catch (ClassNotFoundException e) {
+                dbs.save();
+            }
+            dbs.save();
         }
 
         /**

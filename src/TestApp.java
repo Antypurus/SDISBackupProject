@@ -28,7 +28,8 @@ public class TestApp {
         backupRemoteInterface bk = (backupRemoteInterface)registry.lookup("backup");
         if(bk!=null) {
             bk.backup("test.txt", 1);
-        }**/
+        }
+         **/
     }
 
 }

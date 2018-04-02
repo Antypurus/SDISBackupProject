@@ -19,7 +19,7 @@ public class getChunkMessageStub implements Runnable,MessageStub {
     private DatagramPacket packet;
     private String status = "INITIALIZED";
     private Queue<Message> inboundQueue;
-    private int timeoutPerior = 1000;
+    private int timeoutPeriord = 1000;
     private MulticastSocket socket;
     private InetAddress address;
     private int port;
@@ -46,13 +46,14 @@ public class getChunkMessageStub implements Runnable,MessageStub {
         if(this.inboundQueue!=null){
             this.inboundQueue.add(message);
             this.notify();
+            this.timeoutPeriord = 1000;
         }
     }
 
     @Override
     public synchronized Message getInboundMessage() throws InterruptedException {
         while(this.inboundQueue.isEmpty()){
-            this.wait(this.timeoutPerior);
+            this.wait(this.timeoutPeriord);
             if(this.inboundQueue.isEmpty()){
                 return null;
             }
@@ -116,6 +117,7 @@ public class getChunkMessageStub implements Runnable,MessageStub {
         int ret = this.sendMessage(this.msg);
         if(ret==-1){
             Logging.FatalErrorLog("[ERROR]@getChunkMessageStub-Run:Failed to send Getchunk Message Killing Thread");
+            return;
         }
 
         Message msg = null;
@@ -126,7 +128,8 @@ public class getChunkMessageStub implements Runnable,MessageStub {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(msg!=null && this.messageValidator(msg)){
+            if(msg!=null){
+                Logging.Log("Processing Message ");
                 try {
                     FileOutputStream file = new FileOutputStream("restored/"+msg.getFileID()+msg.getChunkNO());
                     file.write(msg.getBody().getBytes());
@@ -138,12 +141,14 @@ public class getChunkMessageStub implements Runnable,MessageStub {
                     e.printStackTrace();
                 }
             }else{
-                this.timeoutPerior = this.timeoutPerior*2;
-                counter++;
                 if(counter>=5){
                     Logging.FatalErrorLog("[ERROR]@getChunkMessageStub-Run:Timeout Limit Exceeded Killing Thread");
                     return;
                 }
+                Logging.LogError("Failed To Read Response to GetChunk Request for chunk "+this.chunkNo);
+                this.timeoutPeriord = this.timeoutPeriord * 2;
+                counter++;
+                this.sendMessage(this.msg);
             }
         }
     }

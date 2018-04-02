@@ -179,8 +179,6 @@ public abstract class Message {
        String[] components =  message.split("\\r\\n\\s*\\r\\n");
        int len = components.length;
 
-       System.out.println("Message Parse:"+len);
-
         String[] headerArgs = components[0].split("\\s+");
         String body = null;
        if(len==2){

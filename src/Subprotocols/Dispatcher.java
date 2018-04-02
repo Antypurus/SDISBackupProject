@@ -42,8 +42,8 @@ public class Dispatcher implements Runnable{
                     e.printStackTrace();
                 }
             }
-            System.out.println("Number of Registered PUTCHUNK Threads: "+registry.getRegisteredPutchunkThreadCount());
-            System.out.println("Number of Registered GETCHUNK Threads: "+registry.getRegisteredGetchunkThreadCount());
+            //System.out.println("Number of Registered PUTCHUNK Threads: "+registry.getRegisteredPutchunkThreadCount());
+            //System.out.println("Number of Registered GETCHUNK Threads: "+registry.getRegisteredGetchunkThreadCount());
         }
     }
 }

@@ -69,6 +69,7 @@ public class dispatcherMessageHandler implements Runnable{
                     case CHUNK: {
                         MessageStub stub = Constants.registry.getGetchunkThread(msg.getFileID(), msg.getChunkNO());
                         if (stub != null) {
+                            Logging.Log("Adding Message for chunk "+msg.getChunkNO()+"and file id:"+msg.getFileID()+" to inbound queue "+msg.getBody());
                             stub.addInboundMessage(msg);
                         }else{
                             Logging.FatalErrorLog("No Thread Registered For This Chunk:"+msg.getChunkNO()+" with fileID:"+msg.getFileID());

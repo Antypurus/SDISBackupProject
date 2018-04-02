@@ -64,6 +64,7 @@ public class chunkSubprotocol implements Runnable{
             //wait period
 
             if(this.send) {
+                Logging.LogSuccess("Sending Chunk "+this.msg.getChunkNO()+" Body:"+body);
                 buffer = message.toString().getBytes();
                 DatagramPacket pakcet = new DatagramPacket(buffer, buffer.length, this.address, this.port);
                 try {
