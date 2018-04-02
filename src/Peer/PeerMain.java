@@ -1,7 +1,6 @@
 package Peer;
 
-import RMI.backupRemoteInterface;
-import RMI.backupServer;
+import RMI.*;
 import Utils.Channel;
 import Utils.Constants;
 import Utils.threadRegistry;
@@ -86,12 +85,21 @@ public class PeerMain {
 
         engageDispatchers(senderId);
 
-        backupServer bck = new backupServer(senderId,registry,Constants.MDB.socket,Constants.MDB.address,Constants.MDB.port);
-        backupRemoteInterface backup = (backupRemoteInterface)UnicastRemoteObject.exportObject(bck,0);
+        if(s.equals("s")) {
+            backupServer bck = new backupServer(senderId, registry, Constants.MDB.socket, Constants.MDB.address, Constants.MDB.port);
+            backupRemoteInterface backup = (backupRemoteInterface) UnicastRemoteObject.exportObject(bck, 0);
 
-        Registry registry1 = LocateRegistry.getRegistry();
-        registry1.bind("backup",backup);
+            getchunkServer get = new getchunkServer(Constants.MC.socket, Constants.MC.address, Constants.MC.port, senderId);
+            getchunkRemoteInterface getchunk = (getchunkRemoteInterface) UnicastRemoteObject.exportObject(get, 0);
 
+            deleteServer del = new deleteServer(Constants.MC.socket, Constants.MC.address, Constants.MC.port, senderId);
+            deleteRemoteInterface delete = (deleteRemoteInterface) UnicastRemoteObject.exportObject(del, 0);
+
+            Registry registry1 = LocateRegistry.getRegistry();
+            registry1.bind("backup", backup);
+            registry1.bind("getchunk", getchunk);
+            registry1.bind("delete", delete);
+        }
 
         /**
         if (s.equals("s")) {
