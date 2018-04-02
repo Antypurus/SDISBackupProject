@@ -1,6 +1,7 @@
 import RMI.*;
 import Utils.Channel;
 import Utils.Constants;
+import Utils.Logging;
 import Utils.threadRegistry;
 import Subprotocols.Dispatcher;
 import Subprotocols.putchunkSubprotocol;
@@ -97,6 +98,8 @@ public class PeerMain {
             registry1.bind("backup", backup);
             registry1.bind("getchunk", getchunk);
             registry1.bind("delete", delete);
+
+            Logging.FatalSuccessLog("Started RMI Servers");
         }
 
         /**
