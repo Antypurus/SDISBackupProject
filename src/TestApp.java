@@ -13,14 +13,16 @@ public class TestApp {
 
     public static void main(String[] args) throws RemoteException, NotBoundException {
         Registry registry = null;
+        String[] arr = args[0].split("//");
+        String[] argss = arr[1].split("/");
         try {
             // //ip/id
-            registry = LocateRegistry.getRegistry();
+            registry = LocateRegistry.getRegistry(argss[0]);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
-        ServerInterface server = (ServerInterface) registry.lookup(args[0]);
+        ServerInterface server = (ServerInterface) registry.lookup(argss[1]);
         if (server != null) {
             switch (args[1]) {
                 case ("BACKUP"): {
